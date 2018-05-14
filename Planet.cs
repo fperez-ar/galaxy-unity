@@ -1,0 +1,81 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Planet : MonoBehaviour {
+
+	[HideInInspector]
+	public bool civilization = false;
+	public Species dominantSpecies = null;
+
+	public ResourceInventory resources = new ResourceInventory();
+	private int resourcePoints = -1;
+
+	private Transform sun;
+	public float xAmplitude = 100, yAmplitude = 100;
+	public float orbitSpeed;
+	[HideInInspector]
+	public float baseAngle = 180;
+
+
+	public void initCiv(){
+		civilization = true;
+		dominantSpecies = new Species ();
+		dominantSpecies.Init ();
+	}
+
+	public void initCiv(int cmax){
+		civilization = true;
+		Culture cult = new Culture (cmax);
+		dominantSpecies = new Species ( cult );
+		dominantSpecies.Init ();
+	}
+
+	public void setSun(Sun _sun){
+		sun = _sun.transform;
+	}
+
+	public void setSun(Transform sunTransform){
+		sun = sunTransform;
+	}
+
+	public void initResources (int rmax=10){
+		resources.addRange( RandomExt.rndResourcesFromFile (rmax) );
+		resourcePoints = rmax;
+	}
+
+	public int getResourcePoints(){
+		return resourcePoints / BaseVals.maxResource;
+	}
+
+	public string getResourcesList(){
+		return resources.ToString ();
+	}
+
+	void FixedUpdate(){
+		if (sun)
+			orbit ();
+	}
+
+	void orbit () {
+
+		float angle = Mathf.Deg2Rad * baseAngle * Time.time ;
+		float x = Mathf.Cos (angle*orbitSpeed) * xAmplitude ;
+		float z = Mathf.Sin (angle*orbitSpeed) * yAmplitude ;
+
+		transform.position = sun.position + new Vector3 (x, 0, z) * Time.deltaTime;
+	}
+
+	float angle, speed = 2;
+	Vector3 point;
+	void OnDrawGizmos(){
+
+		angle = speed * Mathf.Deg2Rad * Time.deltaTime;
+		point.x = Mathf.Cos(angle * speed) * xAmplitude ;
+		point.z = Mathf.Sin(angle * speed) * yAmplitude ;
+
+		Gizmos.color = Color.white;
+		Gizmos.DrawSphere(point, 0.5f);
+
+	}
+}
