@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CombatPanel : MonoBehaviour {
+public class UICombatPanel : MonoBehaviour {
 
 	public Text plyRace;
 	public Text plyCombatStrength;
