@@ -27,8 +27,10 @@ public class Combat {
 		Culture cA = attacking.culture;
 		Culture cB = defending.culture;
 
-		float off = (int) (attTroops.offensiveCap * attTroops.adaptability);
-		float def = (int) (defTroops.defensiveCap * defTroops.adaptability);
+		float offAdaptMod = 1f + attTroops.adaptability;
+		float defAdaptMod = 1f + defTroops.adaptability;
+		float off = attTroops.offensiveCap * offAdaptMod;
+		float def = defTroops.defensiveCap * defAdaptMod;
 
 		int dTech = cA.technology - cB.technology;
 		int dAggr = cA.agressiveness - cB.agressiveness;

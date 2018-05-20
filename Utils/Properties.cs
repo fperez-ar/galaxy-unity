@@ -41,8 +41,9 @@ public class Properties
 
 		if (!System.IO.File.Exists(filename))
 			System.IO.File.Create(filename);
-
+		//UnityEngine.Debug.Log("Saving propfile in "+filename);
 		System.IO.StreamWriter file = new System.IO.StreamWriter(filename);
+
 
 		foreach (string prop in list.Keys)
 			if (string.IsNullOrEmpty (list [prop])) {
@@ -74,6 +75,13 @@ public class Properties
 			return list [field];
 		}
 		return null;
+	}
+
+	public float loadFloat(string field) {
+		if (list.ContainsKey (field)) {
+			return float.Parse (list [field]);
+		}
+		throw new KeyNotFoundException (field + " not found!");
 	}
 
 	private void loadFromFile(string file)

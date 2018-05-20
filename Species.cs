@@ -7,7 +7,11 @@ public class Species {
 
 	[SerializeField]
 	public string name = "";
-
+	public int population {
+		get { return m_population; }
+		set { m_population = Mathf.Clamp (value, 0, BaseVals.maxPopulation); }
+	}
+	private int m_population = 10000;
 	public Culture culture;
 	public GeneticInventory gen  = new GeneticInventory ();
 	public ManpowerInventory man = new ManpowerInventory ();

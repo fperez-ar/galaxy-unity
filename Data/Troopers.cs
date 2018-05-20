@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Troopers : ResourceBase {
 
-
 	public int manpower {
 		get { return quantity;}
 		set { quantity = value;}
@@ -81,5 +80,6 @@ public class Troopers : ResourceBase {
 			morale = moral
 		};
 	}
+
 
 }

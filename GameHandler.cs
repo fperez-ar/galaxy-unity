@@ -18,13 +18,14 @@ public class GameHandler : MonoBehaviour {
 	public Timer time;
 
 	void Awake () {
+		
+
 		EvHandler.RegisterEv (GameEvent.ENTER_SYS, EnterSystem);
 		EvHandler.RegisterEv (GameEvent.EXIT_SYS, ExitSystem);
 		EvHandler.RegisterEv (GameEvent.ENTER_PLT, CenterCam);
 		EvHandler.RegisterEv (GameEvent.MINE_PLT, minePlanet);
 		EvHandler.RegisterEv (GameEvent.INVADE_PLT, invadePlanet);
 		EvHandler.RegisterEv (GameEvent.RESOLVE_CBT_PHASE, resolveCombat);
-
 
 		EvHandler.RegisterEv (UIEvent.ANIM_IDLE, IdleAnim);
 		EvHandler.RegisterEv (UIEvent.ANIM_CON, ContinueAnim);
@@ -110,19 +111,7 @@ public class GameHandler : MonoBehaviour {
 		EvHandler.ExecuteEv (UIEvent.UPDATE_COMBAT_INFO, new object[2]{atk, def});
 	}
 
-
-	/*
-	void Update(){
-		
-		if (phase.Equals (GamePhase.explore)) {
-			
-		}else if (phase.Equals (GamePhase.attack)) {
-			
-		}
-	}
-	*/
-
-	Troopers Sum(Species sp, string[] troopNames){
+	private Troopers Sum(Species sp, string[] troopNames){
 		int len = troopNames.Length;
 		Troopers[] troopArray = new Troopers[len];
 		for (int i = 0; i < troopNames.Length; i++) {
@@ -131,5 +120,27 @@ public class GameHandler : MonoBehaviour {
 		}
 
 		return Troopers.sum (troopArray);
+	}
+
+	public void Save() {
+		SaveManager.Save (pShip);
+	}
+
+	public void Load() {
+		SaveManager.Load (pShip);
+	}
+
+	public void OnApplicationPause() {
+		Save ();
+	}
+
+	public void OnApplicationQuit() {
+		Application.CancelQuit ();
+		SaveManager.Save (pShip, quit);
+	}
+
+	public void quit() {
+		Save ();
+		Application.Quit ();
 	}
 }

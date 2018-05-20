@@ -1,18 +1,15 @@
 ﻿using System.Collections;
 [System.Serializable]
-public class ResourceBase : ICounterable{
+public class ResourceBase {
 	
-	public const int maxResourePoints = 10;
+	public const int maxResourcePoints = 10;
 
 	public string name = "";
 	public int quantity = 0;
 
-	public int counterQuantity {
-		get { return quantity; }
-	}
 
-	public float percQuantity {
-		get { return (float)quantity / BaseVals.maxResource; }
+	public float normalizedQuantity {
+		get { return (float) quantity / BaseVals.maxResource; }
 	}
 
 	public ResourceBase ()
@@ -52,4 +49,8 @@ public class ResourceBase : ICounterable{
 		return resource.name;
 	}
 
+}
+[System.Serializable]
+public class ResourceArrayWrapper {
+	public ResourceBase[] resources;
 }

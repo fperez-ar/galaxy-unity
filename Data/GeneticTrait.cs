@@ -3,8 +3,9 @@ using System.Text;
 using UnityEngine;
 
 [System.Serializable]
-public class GeneticTrait : UnityEngine.ScriptableObject, ICounterable {
+public class GeneticTrait : UnityEngine.ScriptableObject {
 
+	//public new string name;
 	public string description = "";
 	[Range(-1,1)]
 	public float aggresivenessModificator = 0;
@@ -96,7 +97,5 @@ public class GeneticTrait : UnityEngine.ScriptableObject, ICounterable {
 
 	public string getName (){ return name; }
 
-	public int counterQuantity{ get { return (int) (sum() / 6f); } }
-
-	public float percQuantity {	get { return (sum() / 6f); } }
+	public float normalizedQuantity {	get { return (sum() / 6f); } }
 }

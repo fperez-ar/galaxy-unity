@@ -9,17 +9,15 @@ public class PlayerShip : MonoBehaviour {
 	private int resourcePoints = -1;
 	public ResourceInventory resources = new ResourceInventory();
 
-	void Start() {
-		
+	void Awake() {
+		SaveManager.Load (this);
+		/*
 		resources.add ( new ResourceBase("Water", 25) );
-
 		dominantSpecies.addTroops (BaseVals.BaseTroops, 50);
-		var t1 = new Troopers ("Marines", 10){morale = 50f,  offensiveCap = 42f, defensiveCap = 12f};
-		dominantSpecies.addTroops (t1);
+		dominantSpecies.addTroops (new Troopers ("Marines", 10){morale = 50f,  offensiveCap = 42f, defensiveCap = 12f} );
 		dominantSpecies.addTroops ("Space robots", 25);
 		dominantSpecies.addTroops ("Stellar vessels", 2);
-
-		//EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+		*/
 	}
 
 
@@ -37,6 +35,31 @@ public class PlayerShip : MonoBehaviour {
 
 	public Troopers[] getAllTroopers() {
 		return dominantSpecies.man.getArray ();
+	}
+
+	public void addTroopers(Troopers[] ts) {
+		dominantSpecies.man.addRange (ts);
+	}
+
+
+	public GeneticTrait[] getAllGenes() {
+		return dominantSpecies.gen.getArray ();
+	}
+
+	public void addGenes(GeneticTrait[] gs){
+		dominantSpecies.gen.addRange (gs);
+	}
+
+	public ResourceBase[] getAllResources() {
+		return resources.getArray ();
+	}
+
+	public void addResources(ResourceBase[] rs ) {
+		resources.addRange (rs);
+	}
+
+	public int getPopulation() {
+		return dominantSpecies.population;
 	}
 
 }

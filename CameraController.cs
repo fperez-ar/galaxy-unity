@@ -15,8 +15,8 @@ public class CameraController : MonoBehaviour {
 		fsm.Set (typeof(OrbitCamState));
 		EvHandler.RegisterEv ( UIEvent.SHOW_COMBAT_PANEL, enterCombatPhase );
 		EvHandler.RegisterEv ( UIEvent.HIDE_COMBAT_PANEL, exitCombatPhase );
-		EvHandler.RegisterEv ( UIEvent.SHOW_ARMY_INV, enterCombatPhase );
-		EvHandler.RegisterEv ( UIEvent.HIDE_ARMY_INV, exitCombatPhase );
+		//EvHandler.RegisterEv ( UIEvent.SHOW_ARMY_INV, enterCombatPhase );
+		//EvHandler.RegisterEv ( UIEvent.HIDE_ARMY_INV, exitCombatPhase );
 	}
 
 	void enterCombatPhase(){

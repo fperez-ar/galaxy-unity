@@ -34,7 +34,8 @@ public class PlanetIntelligence : MonoBehaviour {
 
 	void chooseForCombat(){
 		//TODO: get available troopsn
-		List<CounterBase> availableTrps = pltInv.getAvailableTroopCounters ();
+		List<Troopers> availableTrps = null; //?????
+		UnityEngine.Debug.LogWarning ("FIX ME");
 
 		if (availableTrps.Count == 0)
 			throw new System.Exception ("NO TROOPS AVAILABLE IN "+currentPlanet);
@@ -56,7 +57,8 @@ public class PlanetIntelligence : MonoBehaviour {
 		for (int i = 0; i < indxs.Length; i++) {
 			Debug.Log ("idx: "+indx);
 			indx = indxs [i];
-			pltCombatPanel.addCounter ( availableTrps[indx] );
+			//pltCombatPanel.addCounter ( availableTrps[indx] );
+			UnityEngine.Debug.LogWarning ("FIX ME");
 		}
 
 	}

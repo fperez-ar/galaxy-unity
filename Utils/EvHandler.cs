@@ -112,7 +112,7 @@ public static class EvHandler {
 }
 
 //UI Events
-public enum UIEvent{
+public enum UIEvent {
 	SHOW_PLANET_INFO,
 	SHOW_SUN_INFO,
 	SHOW_INV_INFO,
@@ -125,14 +125,10 @@ public enum UIEvent{
 	ANIM_IDLE,
 	ANIM_CON,
 	COUNTER_DROP,
-	SHOW_ARMY_INV,
-	HIDE_ARMY_INV,
-	UPD_ARMY_INV
-
 }
 
 //Game Logic events
-public enum GameEvent{
+public enum GameEvent {
 	ENTER_GAL,
 	EXIT_GAL,
 	ENTER_SYS,
@@ -145,6 +141,8 @@ public enum GameEvent{
 	COMBAT_CALCULATION,
 	RESOLVE_CBT_PHASE,
 	EXPLORE_PHASE,
+	ADD_GENE_MAT,
+	RM_GENE_MAT,
 	AWON, ALOST
 }
 

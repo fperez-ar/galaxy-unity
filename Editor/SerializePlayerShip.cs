@@ -110,8 +110,8 @@ public class SerializePlayerShip : Editor {
 
 				GUILayout.BeginHorizontal ();
 				if (GUILayout.Button ("Add", m250Width) ){
-					
 					resourcesInv.add ( r.getResource ());
+					EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 				}
 
 				/*if ( GUILayout.Button ("Remove", defStyle ()) ){
@@ -154,8 +154,9 @@ public class SerializePlayerShip : Editor {
 				GUILayout.BeginHorizontal ();
 				g = (GeneticTrait) EditorGUILayout.ObjectField (g, typeof(ScriptableObject), false, m250Width);
 
-				if (GUILayout.Button ("Add", m250Width) ){
+				if (GUILayout.Button ("Add", m250Width) ){					
 					geneticInv.add (g);
+					EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 				}
 
 				/*if ( GUILayout.Button ("Remove", defStyle ()) ){
@@ -218,6 +219,7 @@ public class SerializePlayerShip : Editor {
 				GUILayout.BeginHorizontal ();
 					if (GUILayout.Button ("Add", m250Width)) {
 						manInv.add (t.getTrooper ());
+						EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 					}
 
 					/*if (GUILayout.Button ("Remove", defStyle ())) {

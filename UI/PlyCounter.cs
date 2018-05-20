@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class PlyCounter : CounterBase, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class PlyCounter : UICounterBase, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
 	public bool draggable = false;
 	private bool dragEnabled = true;
@@ -22,7 +22,16 @@ public class PlyCounter : CounterBase, IBeginDragHandler, IDragHandler, IEndDrag
 		}
 	}
 
-	public void OnPointerClick(PointerEventData eventData) {
+	public override void OnPointerExit (PointerEventData eventData)
+	{
+		base.OnPointerExit (eventData);
+	}
+
+	public override void OnPointerEnter (PointerEventData eventData)
+	{
+		base.OnPointerEnter (eventData);
+	}
+	public override void OnPointerClick(PointerEventData eventData) {
 		Debug.Log ( "clicky" );
 	}
 
@@ -60,6 +69,5 @@ public class PlyCounter : CounterBase, IBeginDragHandler, IDragHandler, IEndDrag
 	void combatPhaseOut() {
 		draggable = true;
 		dragEnabled = false;
-		ForceResetPos ();
 	}
 }
