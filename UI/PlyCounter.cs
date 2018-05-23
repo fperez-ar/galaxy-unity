@@ -31,7 +31,7 @@ public class PlyCounter : UICounterBase, IBeginDragHandler, IDragHandler, IEndDr
 	{
 		base.OnPointerEnter (eventData);
 	}
-	public override void OnPointerClick(PointerEventData eventData) {
+	public virtual void OnPointerClick(PointerEventData eventData) {
 		Debug.Log ( "clicky" );
 	}
 

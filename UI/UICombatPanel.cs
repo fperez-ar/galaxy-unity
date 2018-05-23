@@ -32,11 +32,11 @@ public class UICombatPanel : MonoBehaviour {
 	}
 
 	void showCombatPanel(){
-		anim.Play ("combat_panel_in");
+		anim.CrossFade("combat_panel_in", 0.2f);
 	}
 
 	void hideCombatPanel(){
-		anim.Play ("combat_panel_out");
+		anim.CrossFade ("combat_panel_out", 0.2f);
 	}
 
 	void animWon(){

@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UIResourceElement : UIListElement, IPointerEnterHandler, IPointerExitHandler {
+public class UIResourceElement : UIListElement<ResourceBase>, IPointerClickHandler {
 	
-	private Troopers refRes;
 	public Image img;
 	public Text quantity;
 	public Text resName;
@@ -17,13 +16,12 @@ public class UIResourceElement : UIListElement, IPointerEnterHandler, IPointerEx
 		quantity.color = ColorUtil.getOpposite (img.color);
 		resName.text = r.name;
 		quantity.text = r.quantity.ToString ();
-
+		refObj = r;
 	}
 
-	public virtual void OnPointerEnter(PointerEventData eventData) {
+	public void OnPointerClick(PointerEventData eventData) {
+		//EvHandler.ExecuteEv (GameEvent.ADD_RES, refObj);
 	}
 
-	public void OnPointerExit(PointerEventData eventData) {
-	}
 
 }

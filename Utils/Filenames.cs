@@ -1,6 +1,10 @@
 ﻿public static class Filenames {
 	//public string baseDir = UnityEngine.Application.dataPath +"/Resources/";
 	public const string ResourceNames = "resourceNames";
+
+	public const string Ship = "ship.r";
+	public const string Species = "species.r";
+
 	public const string resExt = ".r";
 	public const string resSearchPattrn = "*.r";
 	public const string PlyTroopsDir = "troops";

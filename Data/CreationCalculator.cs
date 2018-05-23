@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class CreationCalculator{
 
+	static float offModifier;
+	static float defModifier;
+	static float adaModifier = 0.075f;
 
 	static float getBaseStat(int basePop){
 		
@@ -22,6 +25,7 @@ public static class CreationCalculator{
 		}
 		return accum;
 	}
+
 	public static float calculateDefensive(int pop, GeneticTrait[] gs) {
 		if (gs == null)	return 0f;
 
@@ -31,12 +35,13 @@ public static class CreationCalculator{
 		}
 		return accum;
 	}
+
 	public static float calculateAdaptability(int pop, GeneticTrait[] gs) {
 		if (gs == null)	return 0f;
 
-		float accum = getBaseStat (pop);
+		float accum = 0;
 		for (int i = 0; i < gs.Length; i++) {
-			accum += gs [i].adaptability;
+			accum += gs [i].adaptability * adaModifier;
 		}
 		return accum;
 	}

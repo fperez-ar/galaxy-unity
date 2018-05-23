@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PlayerShip : MonoBehaviour {
 
 	public Species dominantSpecies = new Species();
@@ -25,9 +26,6 @@ public class PlayerShip : MonoBehaviour {
 		return resourcePoints / BaseVals.maxResource;
 	}
 
-	public Troopers getTroop() {
-		return dominantSpecies.getTroops ();
-	}
 
 	public Troopers getTroop(string troopsName) {
 		return dominantSpecies.getTroops (troopsName);

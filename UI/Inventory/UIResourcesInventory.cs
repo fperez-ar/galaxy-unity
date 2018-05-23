@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIResourcesInventory : UIInventory {
+public class UIResourcesInventory : UIInventory<ResourceBase>, IToggleable {
 
 
 	public override void Awake () {
@@ -15,9 +15,12 @@ public class UIResourcesInventory : UIInventory {
 		setRange( pShip.getAllResources () );
 	}
 
-	protected override void setRange (ResourceBase[] rs)
-	{
+	protected override void setRange (ResourceBase[] rs) {
 		base.setRange (rs);
 	}
 
+
+	protected override void OnBeforeShow () {
+		base.OnBeforeShow ();
+	}
 }

@@ -21,7 +21,6 @@ public class GeneticTrait : UnityEngine.ScriptableObject {
 	public float moraleModificator = 0;
 	public float adaptability = 0;
 
-
 	public GeneticTrait () {}
 
 	public GeneticTrait (string _name) 
@@ -59,7 +58,7 @@ public class GeneticTrait : UnityEngine.ScriptableObject {
 
 		if ( name != string.Empty ) sb.AppendLine(name);
 		if ( description != string.Empty ) sb.AppendLine(description);
-
+		/*
 		if (aggresivenessModificator != 0){
 			sb.AppendLine("Aggresiveness "+aggresivenessModificator); 
 		}
@@ -78,6 +77,7 @@ public class GeneticTrait : UnityEngine.ScriptableObject {
 		if (moraleModificator != 0){	
 			sb.AppendLine("Morale "+moraleModificator); 
 		}
+		*/
 		return sb.ToString ();
 	}
 
@@ -85,17 +85,7 @@ public class GeneticTrait : UnityEngine.ScriptableObject {
 		return aggresivenessModificator + offensiveCapModificator + defensiveCapModificator + technologyModificator + manpowerModificator + moraleModificator;
 	}
 
-	public string getStringQuantity(char separator = ':'){
-		return name + separator +"\n"+ description;
-	}
-
-	public string getStringQuantity(string separator){
-		return name + separator +"\n"+ description;
-	}
-
-
-
 	public string getName (){ return name; }
 
-	public float normalizedQuantity {	get { return (sum() / 6f); } }
+	public float normalizedQuantity {	get { return (sum() / 3f); } }
 }

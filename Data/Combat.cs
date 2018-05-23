@@ -13,19 +13,18 @@ public class Combat {
 	public static float attLostModifier = 0.2f;
 	public static float attWinModifier = 0.1f;
 
-	public static float attLostMoraleMod = 0.05f;
-	public static float defLostMoraleMod = 0.05f;
+	public static float moraleDmgModifier = 0.05f;
+	//public static float attLostMoraleMod = 0.05f;
+	//public static float defLostMoraleMod = 0.05f;
 
-	public static bool SimpleCombat(int atkQ, int defQ){
-		return atkQ > defQ;
-	}
 
-	public static CombatResult CCombat(Species attacking, Species defending, Troopers attTroops, Troopers defTroops){
+
+	public static CombatResult CCombat(Species attackingSp, Species defendingSp, Troopers attTroops, Troopers defTroops){
 		//Troopers A = attacking.getTroops (attTroops);
 		//Troopers B = defending.getTroops (defTroops);
 
-		Culture cA = attacking.culture;
-		Culture cB = defending.culture;
+		Culture cA = attackingSp.culture;
+		Culture cB = defendingSp.culture;
 
 		float offAdaptMod = 1f + attTroops.adaptability;
 		float defAdaptMod = 1f + defTroops.adaptability;
@@ -43,19 +42,47 @@ public class Combat {
 		Debug.Log ("delta Aggr: "+dAggr);
 		Debug.Log ("damage: "+dmg);
 
+		CombatResult res;
 		if (dmg > 0) {		//Attackers WON
-			attacking.applyDamage ( dmg * defLostModifier);
-			defending.applyDamage ( dmg * attWinModifier );
-			return CombatResult.AWon;
+			attTroops.applyDamage (dmg * defLostModifier );
+			defTroops.applyDamage (dmg * attWinModifier );
+			//attackingSp.applyDamage ( dmg * defLostModifier);
+			//defendingSp.applyDamage ( dmg * attWinModifier );
+			res = CombatResult.AWon;
 		} else { //dmg <= 0 //Attackers LOST
-			attacking.applyDamage ( Math.Abs (dmg) * attLostModifier + (100 - attTroops.morale) * attLostMoraleMod );
-			defending.applyDamage (  Math.Abs(dmg) * defWinModifier );
-			return CombatResult.ALost;
+
+			float attDmg = Math.Abs (dmg) * attLostModifier + (100 - attTroops.morale) * moraleDmgModifier;
+			attTroops.applyDamage ( attDmg );
+			defTroops.applyDamage (  Math.Abs(dmg) * defWinModifier );
+			//attackingSp.applyDamage ( Math.Abs (dmg) * attLostModifier + (100 - attTroops.morale) * attLostMoraleMod );
+			//defendingSp.applyDamage ( Math.Abs(dmg) * defWinModifier );
+			res = CombatResult.ALost;
 		}
+		//TODO: Resolve damage to morale
+		MoraleDamage (attackingSp, defendingSp, attTroops, defTroops);
 
 		//TODO: enable invasion if defenders lost
+		return res;
+	}
 
-		//TODO: Resolve damage to morale
+	private static void MoraleDamage(Species attackingSp, Species defendingSp, Troopers attTroops, Troopers defTroops) {
+		
+		float deltaT = defendingSp.culture.technology - attackingSp.culture.technology;
+		float deltaA = defendingSp.culture.agressiveness - attackingSp.culture.agressiveness ;
+		float moraleDmg = (deltaT + deltaA) * moraleDmgModifier;
+		attTroops.morale += moraleDmg;
+		Debug.Log (string.Format ("Morale damage {0} to {1}", moraleDmg, attTroops ));
+
+		deltaT = attackingSp.culture.technology - defendingSp.culture.technology;
+		deltaA = attackingSp.culture.agressiveness - defendingSp.culture.agressiveness;
+		moraleDmg = (deltaT + deltaA) * moraleDmgModifier;
+
+		defTroops.morale += moraleDmg;
+		Debug.Log (string.Format ("Morale damage {0} to {1}", moraleDmg, defTroops ));
+	}
+
+	public static float Delta(float a, float b) {
+		return Mathf.Abs (a - b);
 	}
 
 }

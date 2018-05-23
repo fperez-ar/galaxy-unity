@@ -38,14 +38,18 @@ public class UITrooperCreationPanel : MonoBehaviour {
 	void show() {
 		shown = true;
 		geneticPanel.enabled = true;
-		anim.Play ("in");
+		anim.CrossFade ("in", 0.2f);
 		clearFields ();
+		GameMode.setMode (GameState.TROOP_CREATION);
 	}
 
 	void hide() {
 		shown = false;
+		geneticPanel.Clear ();
 		geneticPanel.enabled = false;
-		anim.Play ("out");
+		anim.CrossFade("out", 0.2f);
+		EvHandler.ExecuteEv (UIEvent.HIDE_TOOLTIP);
+		GameMode.setMode (GameState.IDLE);
 	}
 
 	public void hideViaButton() {
@@ -64,7 +68,10 @@ public class UITrooperCreationPanel : MonoBehaviour {
 
 
 	public void Create() {
-		//if (nameInput.text == string.Empty) 
+		if (nameInput.text == string.Empty) {
+			EvHandler.ExecuteEv (UIEvent.SHOW_TOOLTIP, "Input name for Troop");
+			return;
+		}
 		int population 	= int.Parse(manpowerInput.text);
 		if (population <= 0) return;
 
@@ -80,16 +87,16 @@ public class UITrooperCreationPanel : MonoBehaviour {
 
 		//send troop to player inventory
 		pShip.dominantSpecies.addTroops (newTrup);
-		print (newTrup);
+
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 		clearFields ();
 	}
 
 
 	void updateStats() {
-		print ("Updating stats...");
 		manpowerInput.text = getPopulationValidated ();
 		int popu = int.Parse (manpowerInput.text);
+
 		offensiveNum.text 	 = getOffValidated  (popu, geneticPanel.getGenes ());
 		defensiveNum.text 	 = getDefValidated  (popu, geneticPanel.getGenes ());
 		adaptabilityNum.text = getAdaptValidated(popu, geneticPanel.getGenes ());
@@ -115,7 +122,7 @@ public class UITrooperCreationPanel : MonoBehaviour {
 		if (manpowerInput.text == string.Empty)	return "0";
 		if (gs == null)	return "0";
 
-		return CreationCalculator.calculateAdaptability(pop, gs).ToString (BaseVals.StatsFormat);
+		return CreationCalculator.calculateDefensive(pop, gs).ToString (BaseVals.StatsFormat);
 	}
 
 	string getAdaptValidated(int pop, GeneticTrait[] gs) {

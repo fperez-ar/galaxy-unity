@@ -11,7 +11,8 @@ public class Species {
 		get { return m_population; }
 		set { m_population = Mathf.Clamp (value, 0, BaseVals.maxPopulation); }
 	}
-	private int m_population = 10000;
+	private int m_population = 1000;
+
 	public Culture culture;
 	public GeneticInventory gen  = new GeneticInventory ();
 	public ManpowerInventory man = new ManpowerInventory ();
@@ -49,22 +50,10 @@ public class Species {
 		man.add (name, quantity);
 	}
 
-	public Troopers getTroops(){
-		return man.get (BaseVals.BaseTroops);
-	}
-
 	public Troopers getTroops(string troopsName){
 		return man.get (troopsName);
 	}
 
-
-	public void applyDamage(float dmg){
-		applyDamage( (int) dmg);
-	}
-
-	public void applyDamage(int dmg){
-		applyDamage (dmg, BaseVals.BaseTroops);
-	}
 
 	public void applyDamage(int dmg, string troopsName){
 		Troopers t = man.get (troopsName);

@@ -32,7 +32,10 @@ public class Troopers : ResourceBase {
 
 	}
 
-	public void applyDamage(int dmg){
+	public void applyDamage(float dmg) {
+		applyDamage ((int)dmg);
+	}
+	public void applyDamage(int dmg) {
 		manpower -= dmg;
 		if (manpower <= 0) {
 			manpower = 0;

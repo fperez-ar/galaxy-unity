@@ -11,25 +11,33 @@ public static class SaveManager {
 	public static string baseDir = 
 		Application.dataPath + sep + "Resources" + sep + "ply" + sep;
 
-	public static void Load(PlayerShip p) {
-		
+	public static void Load(PlayerShip pShip) {
+
+		var sp = LoadSpecies (baseDir + sep + Filenames.Species);
+		if (sp != null)
+			pShip.dominantSpecies = sp;
+
+		LoadShipPrefs(pShip);
+
 		string troopDir = baseDir + Filenames.PlyTroopsDir;
 		if (Directory.Exists (troopDir)) {
-			p.addTroopers (LoadTroopers (troopDir));
+			pShip.addTroopers (LoadTroopers (troopDir));
 		}
 
 		string resDir = baseDir + Filenames.PlyResourcesDir;
 		if (Directory.Exists (resDir)) {
 			ResourceBase[] rs = LoadResources (resDir);
-			if ( rs != null ) p.addResources (rs);
+			if ( rs != null ) pShip.addResources (rs);
 		}
 		string genesDir = baseDir + Filenames.PlyGenesDir;
 		if (Directory.Exists (genesDir)) {
-			p.addGenes (LoadGenes (genesDir));
+			pShip.addGenes (LoadGenes (genesDir));
 		}
 	}
 
 	public static void Save(PlayerShip pShip) {
+		SaveShipPrefs (pShip);
+		SaveSpecies (pShip.dominantSpecies);
 		SaveTroopers (pShip);
 		SaveGenes (pShip);
 		SaveResources (pShip);
@@ -90,14 +98,12 @@ public static class SaveManager {
 	#region genes
 	public static void Save(string path, GeneticTrait[] gs) {
 		for (int i = 0; i < gs.Length; i++) {
-			Debug.Log (path);
 			Save (path, gs [i]);
 		}
 	}
 
 	public static void Save(string path, GeneticTrait g) {
 		string filepath = path + sep + g.name + Filenames.resExt;
-		Debug.Log (filepath);
 		string jsonGene = JsonUtility.ToJson (g);
 		File.WriteAllText (filepath, jsonGene);
 	}
@@ -143,5 +149,29 @@ public static class SaveManager {
 			Directory.Delete (path, true);
 		}
 		Directory.CreateDirectory (path);
+	}
+
+
+	private static void LoadShipPrefs(PlayerShip pShip) {
+		if (PlayerPrefs.HasKey ("population")) {
+			pShip.dominantSpecies.population = PlayerPrefs.GetInt ("population");
+		}
+	}
+
+	private static void SaveShipPrefs(PlayerShip pShip) {
+		PlayerPrefs.SetInt("population", pShip.dominantSpecies.population );
+		PlayerPrefs.Save ();
+	}
+
+	private static Species LoadSpecies(string path) {
+		if (!File.Exists (path)) return null;
+		return JsonUtility.FromJson<Species> (File.ReadAllText (path));
+	}
+
+	private static void SaveSpecies(Species sp) {
+		string filepath = baseDir + sep + Filenames.Species;
+		if ( File.Exists (filepath)) File.Delete (filepath);
+		string jsonSpecies = JsonUtility.ToJson (sp);
+		File.WriteAllText (filepath, jsonSpecies);
 	}
 }

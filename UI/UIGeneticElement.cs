@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UIGeneticElement : UIListElement, IPointerClickHandler {
-
-	private GeneticTrait refGene;
+public class UIGeneticElement : UIListElement<GeneticTrait>, IPointerClickHandler {
+	
 	public Text geneName;
 	public Text offensiveMod;
 	public Text defensiveMod;
@@ -18,18 +17,15 @@ public class UIGeneticElement : UIListElement, IPointerClickHandler {
 		offensiveMod.text = g.offensiveCapModificator.ToString ();
 		defensiveMod.text = g.defensiveCapModificator.ToString ();
 		adaptabilityMod.text = g.adaptability.ToString ();
-		refGene = g;
+		refObj = g;
 	}
 
 
 	public void OnPointerClick(PointerEventData eventData) {
-		Debug.Log ("\tAdd Gene element "+refGene.name);
-		EvHandler.ExecuteEv (GameEvent.ADD_GENE_MAT, refGene);
+		if (GameMode.isMode (GameState.TROOP_CREATION)) {
+			//the troop creation panel is shown...
+			EvHandler.ExecuteEv (GameEvent.ADD_GENE_MAT, refObj);
+		}
 	}
 
-	public virtual void OnPointerEnter(PointerEventData eventData) {
-	}
-
-	public void OnPointerExit(PointerEventData eventData) {
-	}
 }
