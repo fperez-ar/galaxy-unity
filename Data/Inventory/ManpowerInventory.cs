@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 public class ManpowerInventory : InventoryBase<Troopers> {
-	
-	public Troopers get(string troopName){
-		if (storage.ContainsKey (troopName)){
-			return storage [troopName];
-		}
-		return null;
-	}
 
 	public float getMorale(string troopName){
 		if (storage.ContainsKey (troopName)){

@@ -29,9 +29,11 @@ public class UITrooperElement : UIListElement<Troopers>, IPointerClickHandler, I
 	public override void unset ()
 	{
 		base.unset ();
-		//TODO: return manpow to pool,
-		EvHandler.ExecuteEv (GameEvent.DISSOLVE_FF, refObj);
+	}
 
+	public void remove(){
+		EvHandler.ExecuteEv (GameEvent.RM_CBT_FF, refObj);
+		unset ();
 	}
 
 
@@ -49,6 +51,7 @@ public class UITrooperElement : UIListElement<Troopers>, IPointerClickHandler, I
 		//Debug.Log ( "OnPointerExit" );
 		//EvHandler.ExecuteEv (UIEvent.HIDE_TOOLTIP);
 	}
+
 
 
 }

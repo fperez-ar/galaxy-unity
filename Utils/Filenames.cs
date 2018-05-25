@@ -1,6 +1,7 @@
 ﻿public static class Filenames {
-	//public string baseDir = UnityEngine.Application.dataPath +"/Resources/";
-	public const string ResourceNames = "resourceNames";
+	public static string resourcesDir = UnityEngine.Application.dataPath +"/Resources/";
+	public const string ResourceNames = "resourceNames.txt";
+	public const string TokiPonaDict = "lang/tokipona";
 
 	public const string Ship = "ship.r";
 	public const string Species = "species.r";

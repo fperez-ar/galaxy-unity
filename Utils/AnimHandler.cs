@@ -2,127 +2,123 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimHandler : MonoBehaviour {
+public class AnimHandler : MonoBehaviour
+{
 	
 	//TODO: Implement state machine
 
-	public enum AnimState{
+	public enum AnimState
+	{
 		idle,
 		movingTo,
 		orbit
 	}
-	static AnimState astate = AnimState.idle, previous;
 
-	static float cutoffPerc;
-	static Vector3 point;
-	static Transform move, tow;
-	static float angle = 0, speed = 1, xAmplitude = 1, yAmplitude = 1;
-	private static float startTime = 0, elapsed = 0, distCovered = 0, totalDistance = 0;
+	private AnimState astate = AnimState.idle, previous;
 
-    void Update () 
+	private float cutoffPerc;
+	private Vector3 point;
+	public float angle = 0, speed = 1, xAmplitude = 1, yAmplitude = 1;
+	private float startTime = 0, elapsed = 0, distCovered = 0, totalDistance = 0;
+	public Transform ship, tow;
+
+	public void awake() {
+		EvHandler.RegisterEv (UIEvent.ENTER_PLT, MoveTo);
+	}
+
+	void Update ()
 	{
 		if (astate == AnimState.movingTo) {
 			
 			distCovered = (Time.time - startTime) * speed;
-			elapsed  = distCovered / totalDistance ;
+			elapsed = distCovered / totalDistance;
 
-			move.forward = Vector3.Slerp (move.forward, tow.position-move.position, elapsed);
+			ship.forward = Vector3.Slerp (ship.forward, tow.position - ship.position, elapsed);
 
-			//if ( Vector3.Distance (move.position, tow.position) <= cutThreshold ) {
-			if ( elapsed >= cutoffPerc){
-				Orbit (move, tow, speed, 1, 1);
+			if (elapsed >= cutoffPerc) {
+				Orbit (tow);
 			} else {
-				move.position = Vector3.Lerp (move.position, tow.position, elapsed);
+				ship.position = Vector3.Lerp (ship.position, tow.position, elapsed);
 			}
 		} 
 	}
 
-	void FixedUpdate()
+	void FixedUpdate ()
 	{
-		if (astate == AnimState.orbit){
+		if (astate == AnimState.orbit) {
 
 			//TODO: Eliminate jerking motion at beginning of movement
 			angle = speed * Mathf.Deg2Rad * Time.time;
 
-			point.x = Mathf.Cos(angle * speed) * xAmplitude ;
-			point.z = Mathf.Sin(angle * speed) * yAmplitude ;
+			point.x = Mathf.Cos (angle * speed) * xAmplitude;
+			point.z = Mathf.Sin (angle * speed) * yAmplitude;
 
-
-			//move.position = (tow.position + point) * Time.deltaTime;
-			move.position  = Vector3.Lerp(move.position, tow.position+point, 0.25f );
-			move.forward =  tow.position - move.position ;
+			ship.position = Vector3.Lerp (ship.position, tow.position + point, 0.25f);
+			ship.forward = tow.position - ship.position;
 		}
 	}
 
-	public static void MoveTo(Transform _move, Transform _to, float _cutOff, float _speed){
-		
+	public void MoveTo (object oTo)
+	{
+		Debug.Log ("move to");
+		Transform _to = (Transform) oTo;
 		if (astate == AnimState.movingTo) {
+			//Toggle
 			astate = AnimState.idle;
-			return;
+			return; 
 		} else if (astate == AnimState.orbit && _to == tow) {
+			//Toggle ?
 			astate = AnimState.idle;
-			return;
+			return; 
 		} else if (astate == AnimState.idle && _to == tow) {
-			Orbit (move, tow, speed, 1, 1);
+			//if it's the same, just orbit
+			Orbit (tow);
 			return;
 		}
 
 		startTime = Time.time;
 		elapsed = 0;
 
-		move = _move;
 		tow = _to.transform;
 		point = _to.transform.position;
 
-		totalDistance = Vector3.Distance (move.position, tow.position);
-		cutoffPerc = (_cutOff * _to.transform.lossyScale.magnitude) / totalDistance ;
+		totalDistance = Vector3.Distance (ship.position, tow.position);
+		cutoffPerc = (_to.transform.lossyScale.magnitude) / totalDistance;
 
-		/*
-		print ("_cutoff "+_cutOff); 
-		print ("transform scale "+ _col.transform.lossyScale.magnitude); 
-		print ("totalDistance "+totalDistance );
-		print ("result "+cutoffPerc ); 
-		*/
-		speed = _speed;
-
-		if (totalDistance <= cutoffPerc){
+		if (totalDistance <= cutoffPerc) {
 			astate = AnimState.orbit;
-		}else{
+		} else {
 			astate = AnimState.movingTo;
 		}
 	}
 
-	public static void Orbit(Transform _center, Transform _around, float _speed, float _xAmplitude, float _yAmplitude){
+	public void Orbit (Transform _around)
+	{
 
 		if (astate == AnimState.orbit) {
 			astate = AnimState.idle;
 			return;
 		}
 
-		move = _center;
 		tow = _around;
-		speed = _speed;
 		point = Vector3.zero;
-		angle = Vector3.Angle (move.position, tow.position) * Mathf.Deg2Rad;
+		angle = Vector3.Angle (ship.position, tow.position) * Mathf.Deg2Rad;
 
-
-		xAmplitude = (tow.lossyScale.magnitude * _xAmplitude) ;
-		yAmplitude = (tow.lossyScale.magnitude * _yAmplitude) ;
-		/*
-		print ("Objective scale "+ tow.lossyScale.magnitude);
-		print ("Objective mod (_amplitude) "+ _xAmplitude);
-		print ("Result "+xAmplitude);
-		*/
+		xAmplitude *= tow.lossyScale.magnitude;
+		yAmplitude *= tow.lossyScale.magnitude;
 
 		astate = AnimState.orbit;
+		EvHandler.ExecuteEv (GameEvent.ORBIT_PLT, _around.GetComponent<CelestialBody> ());
 	}
 
-	public static void Suspend(){
+	public void Suspend ()
+	{
 		previous = astate;
 		astate = AnimState.idle;
 	}
 
-	public static void Resume(){
+	public void Resume ()
+	{
 		astate = previous;
 	}
 

@@ -164,36 +164,32 @@ public static class RandomText {
 		return sb.ToString ();
 	}
 
+	private static string[] tokipona_words;
+	public static string getTokiPonaWord(){
+		
+		if (tokipona_words == null) {
+			tokipona_words = File.ReadAllLines (Filenames.resourcesDir + Filenames.TokiPonaDict, Encoding.UTF8);
+		}
+
+		int l = Random.Range (0, tokipona_words.Length);
+		return  tokipona_words[l];
+	}
+
 	public static string reallyRandomText(int minLen, int maxLen){
 		float r = Random.value;
-		if (r < 0.25f) {
+		if (r < 0.25f) { 		//0 - .24
 			//Debug.Log ("getEnglish ");
 			return getTokiPonaWord ();
-		} else if (r < 0.5) {
+		} else if (r < 0.5) { 	//.25 - .49
 			//Debug.Log ("getEsperanto ");
 			return getEsperanto (minLen, maxLen);
-		} else if (r < 0.75) {
+		} else if (r < 0.75) { 	//.5 - .74
 			//Debug.Log ("getNiceText ");
 			return getNiceText (minLen, 2);
-		} else if (r < 0.9) {
+		} else if (r < 0.9) { 	//.75 - .89
 			return getEnglish (minLen, maxLen);
 		}
-		//Debug.Log ("getText ");
-		//return getText (maxLen);
+
 		return getText ( Random.Range (minLen, maxLen));
 	}
-
-
-	//TODO: add toki-pona words via properties file
-	private static string dataPath = Application.dataPath + Path.DirectorySeparatorChar;
-	private static string[] tokipona;
-	public static string getTokiPonaWord(){
-		if (tokipona == null) {
-			tokipona = File.ReadAllLines (dataPath + "tokipona", Encoding.UTF8);
-		}
-
-		int l = Random.Range (0, tokipona.Length);
-		return  tokipona[l];
-	}
-
 }

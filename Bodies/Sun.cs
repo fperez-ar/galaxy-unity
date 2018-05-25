@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sun : MonoBehaviour {
+public class Sun : CelestialBody {
 	//Sun size and light emission have a relationship
 }

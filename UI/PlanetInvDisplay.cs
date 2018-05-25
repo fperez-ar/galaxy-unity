@@ -10,6 +10,7 @@ public class PlanetInvDisplay : MonoBehaviour {
 	public UnityEngine.UI.Text planetRaceTxt;
 	//public UnityEngine.UI.Text planetCultureTxt;
 
+	public GameObject probeActionBtn;
 	public GameObject mineActionBtn;
 	public GameObject invadeActionBtn;
 
@@ -30,6 +31,7 @@ public class PlanetInvDisplay : MonoBehaviour {
 		planetNameTxt.text = string.Empty;
 		planetRaceTxt.text = string.Empty;
 		//planetCultureTxt.text = string.Empty;
+		probeActionBtn.SetActive (false);
 		invadeActionBtn.SetActive ( false );
 		mineActionBtn.SetActive ( false );
 	}
@@ -38,7 +40,6 @@ public class PlanetInvDisplay : MonoBehaviour {
 	void updatePlanetText(object oPlanet){
 		Planet p = (Planet) oPlanet;
 		clear ();
-
 		DisplayText (p.name, planetNameTxt);
 	}
 

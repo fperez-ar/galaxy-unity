@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet : MonoBehaviour {
+public class Planet : CelestialBody {
 
 	[HideInInspector]
-	public bool civilization = false;
+	public bool hasCivilization = false;
 	public Species dominantSpecies = null;
 
 	public ResourceInventory resources = new ResourceInventory();
@@ -19,13 +19,13 @@ public class Planet : MonoBehaviour {
 
 
 	public void initCiv(){
-		civilization = true;
+		hasCivilization = true;
 		dominantSpecies = new Species ();
 		dominantSpecies.Init ();
 	}
 
 	public void initCiv(int cmax){
-		civilization = true;
+		hasCivilization = true;
 		Culture cult = new Culture (cmax);
 		dominantSpecies = new Species ( cult );
 		dominantSpecies.Init ();

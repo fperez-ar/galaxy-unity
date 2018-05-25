@@ -12,13 +12,7 @@ public class PlayerShip : MonoBehaviour {
 
 	void Awake() {
 		SaveManager.Load (this);
-		/*
-		resources.add ( new ResourceBase("Water", 25) );
-		dominantSpecies.addTroops (BaseVals.BaseTroops, 50);
-		dominantSpecies.addTroops (new Troopers ("Marines", 10){morale = 50f,  offensiveCap = 42f, defensiveCap = 12f} );
-		dominantSpecies.addTroops ("Space robots", 25);
-		dominantSpecies.addTroops ("Stellar vessels", 2);
-		*/
+		EvHandler.RegisterEv (GameEvent.RM_CBT_FF, removeTrooper, false);
 	}
 
 
@@ -37,8 +31,15 @@ public class PlayerShip : MonoBehaviour {
 
 	public void addTroopers(Troopers[] ts) {
 		dominantSpecies.man.addRange (ts);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
+	public void removeTrooper(object refTrooper) {
+		Troopers t = (Troopers)refTrooper;
+		dominantSpecies.population += t.manpower;
+		dominantSpecies.man.remove(t.name);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+	}
 
 	public GeneticTrait[] getAllGenes() {
 		return dominantSpecies.gen.getArray ();
@@ -46,14 +47,34 @@ public class PlayerShip : MonoBehaviour {
 
 	public void addGenes(GeneticTrait[] gs){
 		dominantSpecies.gen.addRange (gs);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
 	public ResourceBase[] getAllResources() {
 		return resources.getArray ();
 	}
 
+	public ResourceBase getResource(string resourceName) {
+		return resources.get (resourceName);
+	}
+
 	public void addResources(ResourceBase[] rs ) {
 		resources.addRange (rs);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+	}
+
+	public void removeResource(string resourceName) {
+		resources.remove (resourceName);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+	}
+
+	public void removeResource(ResourceBase rs ) {
+		resources.remove (rs.name);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+	}
+
+	public bool hasResources(string resourceName) {
+		return resources.contains (resourceName);
 	}
 
 	public int getPopulation() {

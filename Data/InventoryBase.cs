@@ -56,6 +56,21 @@ public abstract class InventoryBase<T> where T : ResourceBase  {
 
 	}
 
+	public virtual T get(string itemName){
+		if (storage.ContainsKey (itemName))
+			return storage [itemName];
+		else
+			return null;
+	}
+
+	public virtual bool contains(string itemName){
+		return storage.ContainsKey (itemName);
+	}
+
+	public virtual bool contains(T item){
+		return storage.ContainsValue (item);
+	}
+
 	public virtual int getQuantity(string itemName){
 		return storage [itemName].quantity;
 	}

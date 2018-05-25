@@ -9,10 +9,10 @@ public static class RandomExt {
 
 	//function for  spiral out in x axis f(t) = ( t, t*cos(t), t*sin(t))
 
-	private static string[] ResourceNames;
+	private static string[] resourceNames;
 	public static void LoadResourcesFile () {
-		string path = Application.dataPath + "/Resources/"+Filenames.ResourceNames;
-		ResourceNames = File.ReadAllLines (path, Encoding.UTF8);
+		string path = Filenames.resourcesDir + Filenames.ResourceNames;
+		resourceNames = File.ReadAllLines (path, Encoding.UTF8);
 	}
 
 	public static Vector3 rndPositionInBounds(Bounds b){
@@ -61,7 +61,7 @@ public static class RandomExt {
 	}
 
 	public static ResourceBase[] rndResourcesFromFile(int resourcePoints = 10){
-		if (ResourceNames == null || ResourceNames.Length == 0) LoadResourcesFile ();
+		if (resourceNames == null || resourceNames.Length == 0) LoadResourcesFile ();
 		var rnd = new System.Random ();
 		int total = resourcePoints;
 		string name = "";
@@ -72,8 +72,8 @@ public static class RandomExt {
 		for (int i = 0; i < len; i++) {
 			if (total <= 0) break;
 
-			index = Random.Range (0, ResourceNames.Length);
-			name = ResourceNames [index];
+			index = Random.Range (0, resourceNames.Length);
+			name = resourceNames [index];
 			qua = rnd.Next (resourcePoints);
 			ls.Add (new ResourceBase(name, qua));
 			total -= qua;

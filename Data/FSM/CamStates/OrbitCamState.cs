@@ -22,9 +22,9 @@ public class OrbitCamState : CamState {
 
 	public override void Update ()
 	{
-
 		if (Input.GetKeyDown (KeyCode.F)) {
-			EvHandler.ExecuteEv (GameEvent.ENTER_PLT, new object[2]{ transform, lastCol });
+			Debug.Log ("F");
+			EvHandler.ExecuteEv (UIEvent.ENTER_PLT, lastCol.transform);
 		}
 
 		// Zoom

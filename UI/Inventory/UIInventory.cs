@@ -8,49 +8,58 @@ public abstract class UIInventory<T> : MonoBehaviour, IToggleable where T : clas
 	public Transform contentParent;
 
 	public bool shown {
-		get { return mShown;  }
+		get { return mShown; }
 		set { mShown = value; }
 	}
-	protected bool mShown = false;	
+
+	protected bool mShown = false;
+
 	public event SimpleDelegate BeforeShow;
+
 	protected Animation anim;
 	protected UIListElement<T> uiElementPrefab;
-	protected List<UIListElement<T>> list = new List<UIListElement<T>>();
+	protected List<UIListElement<T>> list = new List<UIListElement<T>> ();
 	protected Dictionary<T, UIListElement<T>> objUiMap;
 
-	public virtual void Awake() {
-		anim = GetComponent<Animation>();
-		list.AddRange (contentParent.GetComponentsInChildren<UIListElement<T>>());
+	public virtual void Awake ()
+	{
+		anim = GetComponent<Animation> ();
+		list.AddRange (contentParent.GetComponentsInChildren<UIListElement<T>> ());
 		objUiMap = new Dictionary<T, UIListElement<T>> (list.Count);
 		clear ();
 	}
 
-	public virtual void toggle() {
-		if ( mShown ){
+	public virtual void toggle ()
+	{
+		if (mShown) {
 			hide ();
-		}else{
+		} else {
 			OnBeforeShow ();
 			show ();
 		}
 	}
 
-	protected virtual void show() {
+	protected virtual void show ()
+	{
 		mShown = true;
 		update ();
 		anim.CrossFade ("in");
 	}
 
-	protected virtual void hide() {
+	protected virtual void hide ()
+	{
 		mShown = false;
 		anim.CrossFade ("out");
 	}
 
-	protected virtual void update () {
+	protected virtual void update ()
+	{
 		clear ();
 
 	}
 
-	protected virtual void clear(){
+	protected virtual void clear ()
+	{
 		for (int i = 0; i < list.Count; i++) {
 			list [i].gameObject.SetActive (false);
 		}
@@ -107,8 +116,11 @@ public abstract class UIInventory<T> : MonoBehaviour, IToggleable where T : clas
 	}
 	*/
 
-	protected virtual void setRange(T[] elems) {
-		if (elems.Length > list.Count) { increase (elems.Length - list.Count); }
+	protected virtual void setRange (T[] elems)
+	{
+		if (elems.Length > list.Count) {
+			increase (elems.Length - list.Count);
+		}
 		objUiMap.Clear ();
 		for (int i = 0; i < list.Count; i++) {
 			if (i < elems.Length) {
@@ -120,23 +132,26 @@ public abstract class UIInventory<T> : MonoBehaviour, IToggleable where T : clas
 		}
 	}
 
-	protected virtual void increase(int increase = 10) {
+	protected virtual void increase (int increase = 10)
+	{
 		UIListElement<T>[] ts = new UIListElement<T>[increase];
 		for (int i = 0; i < increase; i++) {
-			ts [i] = (UIListElement<T>) GameObject.Instantiate (uiElementPrefab, contentParent);
+			ts [i] = (UIListElement<T>)GameObject.Instantiate (uiElementPrefab, contentParent);
 			ts [i].name = uiElementPrefab.name + " " + i;
 			ts [i].gameObject.SetActive (false);
 		}
 		list.AddRange (ts);
 	}
 
-	protected virtual void remove(UIListElement<T> uiElemList) {
+	protected virtual void remove (UIListElement<T> uiElemList)
+	{
 		if (list.Contains (uiElemList)) {
 			list.Remove (uiElemList);
 		}
 	}
 
-	protected virtual void OnBeforeShow(){
+	protected virtual void OnBeforeShow ()
+	{
 		if (BeforeShow != null) {
 			BeforeShow ();
 		}

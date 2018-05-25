@@ -20,7 +20,6 @@ public class PlayerInvDisplay : MonoBehaviour {
 
 	void updateInv() {
 		playerRaceTxt.text = pShip.dominantSpecies.name;
-
 		DisplayText (pShip.dominantSpecies.name, playerRaceTxt);
 		DisplayText (pShip.getPopulation (), playerPopText);
 	}
