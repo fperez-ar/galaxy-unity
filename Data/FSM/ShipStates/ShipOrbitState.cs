@@ -27,13 +27,15 @@ public class ShipOrbitState : State {
 
 	public override void Update ()
 	{
-		//TODO: Eliminate jerking motion at beginning of movement
 		angle = speed * Mathf.Deg2Rad * Time.time;
 
 		point.x = Mathf.Cos (angle * speed) * amplitude.x;
 		point.z = Mathf.Sin (angle * speed) * amplitude.y;
 
-		parent.position = Vector3.Lerp (parent.position, target.position + point, 0.25f);
-		parent.forward = target.position - parent.position;
+
+		parent.position = Vector3.Lerp (parent.position, target.position + point, Time.deltaTime);
+		//TODO: Keep ship perpendicular to planet surface, looking ahead, cam looking at planet
+
+		//parent.forward = target.position + point - (future_point 
 	}
 }

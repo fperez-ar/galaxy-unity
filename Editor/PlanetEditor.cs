@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor (typeof(PlanetEditor), true)]
+[CustomEditor (typeof(PlanetEditor))]
 public class PlanetEditor : Editor
 {
 	GUIStyle style = new GUIStyle();
