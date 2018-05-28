@@ -6,7 +6,6 @@ using UnityEngine;
 
 public static class RandomText {
 
-	//TODO: Move to other class for generating text
 	const string num = "0123456789";
 	const string vowels = "aeiou";
 	const string consonants = "bcdfghjklmñpqrstvwxyz";

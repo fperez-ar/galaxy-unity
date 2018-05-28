@@ -72,9 +72,4 @@ public class SystemGenNode : MonoBehaviour {
 		}
 	}
 
-	void OnDrawGizmos()
-	{
-		Gizmos.color = Color.cyan;
-		//Gizmos.DrawWireSphere(transform.position, systemRange);
-	}
 }

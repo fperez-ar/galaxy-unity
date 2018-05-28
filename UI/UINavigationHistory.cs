@@ -41,7 +41,9 @@ public class UINavigationHistory : UIInventory<CelestialBody>
 		for (int i = 0; i < list.Count; i++) {
 			if (i < elems.Length) {
 				list [i].set (elems [i]);
-				//objUiMap.Add (elems [i], list [i]);
+				/*if (objUiMap.ContainsKey (elems [i])){
+					objUiMap.Add (elems [i], list [i]);
+				}*/
 			} else {
 				list [i].unset ();
 			}

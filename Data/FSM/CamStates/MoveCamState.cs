@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class OrbitCamState : CamState {
+public class MoveCamState : CamState {
 
 	private Vector3 point;
 	private Collider lastCol;
@@ -11,7 +11,7 @@ public class OrbitCamState : CamState {
 	private Vector3 baseMousePos = Vector3.zero;
 	private float moveSpeed = 0.2f, rotSpeed = 0.8f, zoomSpeed = 10;
 
-	public OrbitCamState (Camera _cam, Transform _transform, float _moveSpeed, float _rotSpeed, float _zoomSpeed)
+	public MoveCamState (Camera _cam, Transform _transform, float _moveSpeed, float _rotSpeed, float _zoomSpeed)
 	{
 		cam = _cam;
 		transform = _transform;
@@ -23,8 +23,7 @@ public class OrbitCamState : CamState {
 	public override void Update ()
 	{
 		if (Input.GetKeyDown (KeyCode.F)) {
-			Debug.Log ("F");
-			EvHandler.ExecuteEv (UIEvent.ENTER_PLT, lastCol.transform);
+			if ( lastCol ) EvHandler.ExecuteEv (UIEvent.ENTER_PLT, lastCol.transform);
 		}
 
 		// Zoom
@@ -42,7 +41,7 @@ public class OrbitCamState : CamState {
 			baseMousePos = Input.mousePosition;
 			RaycastHit rinfo;
 
-			if (Physics.Raycast (cam.ScreenPointToRay (Input.mousePosition), out rinfo, Mathf.Infinity, (1 << Layers.PLANET | 1 << Layers.SUN))) {
+			if (Physics.Raycast (cam.ScreenPointToRay (Input.mousePosition), out rinfo, Mathf.Infinity, (Layers.PLANET | Layers.SUN))) {
 				point = rinfo.collider.transform.position;
 				lastCol = rinfo.collider;
 
@@ -78,15 +77,17 @@ public class OrbitCamState : CamState {
 			}
 		}
 
+		//TODO: Move movement to ASDF + Q&E/Q&C
 		//Movement
 		if (Input.GetMouseButtonDown (1)) {
 			baseMousePos = Input.mousePosition;
 		}
 		if (Input.GetMouseButton (1)) {
 			var deltaMouse = (baseMousePos - Input.mousePosition);
-
-			transform.position += transform.right * deltaMouse.x * moveSpeed * Time.deltaTime;
-			transform.position += transform.up * deltaMouse.y * moveSpeed * Time.deltaTime;
+			transform.RotateAround (cam.transform.position, transform.up, deltaMouse.x * rotSpeed * Time.deltaTime);
+			//transform.RotateAround (cam.transform.position, transform.right, deltaMouse.y * rotSpeed * Time.deltaTime);
+			//transform.position += transform.right * deltaMouse.x * moveSpeed * Time.deltaTime;
+			//transform.position += transform.up * deltaMouse.y * moveSpeed * Time.deltaTime;
 		}
 	}
 

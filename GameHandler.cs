@@ -16,21 +16,42 @@ public class GameHandler : MonoBehaviour
 	public GamePhase phase;
 	private Planet planetSelectd;
 	public AnimHandler anim;
-	public PlanetIntelligence planetInt;
+	public PlanetIntelligence pI;
 	public PlayerShip pShip;
 	public Timer time;
+
+	#if UNITY_EDITOR
+	public Transform debug_planet;
+	#endif
 
 	void Awake ()
 	{
 		anim.awake ();
+		pI.awake ();
 		EvHandler.RegisterEv (GameEvent.MINE_PLT, minePlanet);
 		EvHandler.RegisterEv (GameEvent.INVADE_PLT, invadePlanet);
 		EvHandler.RegisterEv (GameEvent.RESOLVE_CBT_PHASE, resolveCombat);
-
 		EvHandler.RegisterEv (UIEvent.ANIM_IDLE, IdleAnim);
 		EvHandler.RegisterEv (UIEvent.ANIM_CON, ContinueAnim);
 		EvHandler.RegisterEv (UIEvent.SHOW_PLANET_INFO, setCurrentPlanet);
+		GameMode.setMode (GameState.NAVEGATION);
+		#if UNITY_EDITOR
+		Invoke ("debug", 0.5f);
+		#endif
+	}
 
+	void debug(){
+		anim.MoveTo (debug_planet);
+	}
+
+	void Update()
+	{
+		pI.update ();
+	}
+
+	void FixedUpdate()
+	{
+		anim.update ();//camera work should go to lateupdate if it jitters
 	}
 
 
@@ -47,7 +68,7 @@ public class GameHandler : MonoBehaviour
 	{
 		//THIS MIGHT NOT WORK IF THE LOGIC FOR DISPLAYING PLANET INFO CHANGES
 		planetSelectd = (Planet)oPlanet;
-		planetInt.setCurrentPlanet (planetSelectd);
+		pI.setCurrentPlanet (planetSelectd);
 
 	}
 
@@ -57,8 +78,10 @@ public class GameHandler : MonoBehaviour
 		planetSelectd = (Planet)oPlanet;
 		if (pShip.hasResources ("probe")) {
 			pShip.removeResource ("probe");
+			//TODO: SHOW PLANET INFO
+			EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
+
 		}
-		//TODO: SHOW PLANET INFO
 	}
 
 	void minePlanet ()

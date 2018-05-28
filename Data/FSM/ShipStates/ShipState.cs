@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleCamState : CamState {
-	
+public class ShipState : State {
+
 }

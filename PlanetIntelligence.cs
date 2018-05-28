@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlanetIntelligence : MonoBehaviour {
 
+	//TODO: Change to fsm
 	public enum LogicState{
 		idle, combat_deliberation
 	}
@@ -17,7 +18,7 @@ public class PlanetIntelligence : MonoBehaviour {
 	private Timer deliberationTimer;
 	public float baseDeliberationTime = 10;
 
-	void Awake(){
+	public void awake(){
 		EvHandler.RegisterEv (GameEvent.PREPARATION_PHASE, enterCombat);
 	}
 
@@ -63,11 +64,11 @@ public class PlanetIntelligence : MonoBehaviour {
 
 	}
 
-	void Update(){
+	public void update(){
 		if (currentState.Equals (LogicState.combat_deliberation)) {
 			if (deliberationTimer.check ()) {
-				currentState = LogicState.idle;
 				chooseForCombat ();
+				currentState = LogicState.idle;
 			}
 		}
 	}

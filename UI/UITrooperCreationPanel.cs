@@ -37,19 +37,17 @@ public class UITrooperCreationPanel : MonoBehaviour {
 
 	void show() {
 		shown = true;
-		geneticPanel.enabled = true;
-		anim.CrossFade ("in", 0.2f);
 		clearFields ();
+		geneticPanel.enabled = true;
 		GameMode.setMode (GameState.TROOP_CREATION);
+		anim.CrossFade ("in", 0.2f);
 	}
 
 	void hide() {
 		shown = false;
-		geneticPanel.Clear ();
-		geneticPanel.enabled = false;
-		anim.CrossFade("out", 0.2f);
+		GameMode.reset();
 		EvHandler.ExecuteEv (UIEvent.HIDE_TOOLTIP);
-		GameMode.setMode (GameState.IDLE);
+		anim.CrossFade("out", 0.2f);
 	}
 
 	public void hideViaButton() {

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet : CelestialBody {
+public class Planet : CelestialBody
+{
+
 
 	[HideInInspector]
 	public bool hasCivilization = false;
 	public Species dominantSpecies = null;
 
-	public ResourceInventory resources = new ResourceInventory();
+	public ResourceInventory resources = new ResourceInventory ();
 	private int resourcePoints = -1;
 
 	private Transform sun;
@@ -17,65 +19,66 @@ public class Planet : CelestialBody {
 	[HideInInspector]
 	public float baseAngle = 180;
 
-
-	public void initCiv(){
+	public void initCiv ()
+	{
 		hasCivilization = true;
 		dominantSpecies = new Species ();
 		dominantSpecies.Init ();
 	}
 
-	public void initCiv(int cmax){
+	public void initCiv (int cmax)
+	{
 		hasCivilization = true;
 		Culture cult = new Culture (cmax);
-		dominantSpecies = new Species ( cult );
+		dominantSpecies = new Species (cult);
 		dominantSpecies.Init ();
 	}
 
-	public void setSun(Sun _sun){
+	public void setSun (Sun _sun)
+	{
 		sun = _sun.transform;
 	}
 
-	public void setSun(Transform sunTransform){
+	public void setSun (Transform sunTransform)
+	{
 		sun = sunTransform;
 	}
 
-	public void initResources (int rmax=10){
-		resources.addRange( RandomExt.rndResourcesFromFile (rmax) );
+	public void initResources (int rmax = 10)
+	{
+		resources.addRange (RandomExt.rndResourcesFromFile (rmax));
 		resourcePoints = rmax;
 	}
 
-	public int getResourcePoints(){
+	public int getResourcePoints ()
+	{
 		return resourcePoints / BaseVals.maxResource;
 	}
 
-	public string getResourcesList(){
+	public string getResourcesList ()
+	{
 		return resources.ToString ();
 	}
 
-	void FixedUpdate(){
+	void FixedUpdate ()
+	{
 		if (sun)
 			orbit ();
 	}
 
-	void orbit () {
+	void orbit ()
+	{
 
-		float angle = Mathf.Deg2Rad * baseAngle * Time.time ;
-		float x = Mathf.Cos (angle*orbitSpeed) * xAmplitude ;
-		float z = Mathf.Sin (angle*orbitSpeed) * yAmplitude ;
+		float angle = Mathf.Deg2Rad * baseAngle * Time.time;
+		float x = Mathf.Cos (angle * orbitSpeed) * xAmplitude;
+		float z = Mathf.Sin (angle * orbitSpeed) * yAmplitude;
 
 		transform.position = sun.position + new Vector3 (x, 0, z) * Time.deltaTime;
 	}
 
-	float angle, speed = 2;
-	Vector3 point;
-	void OnDrawGizmos(){
-
-		angle = speed * Mathf.Deg2Rad * Time.deltaTime;
-		point.x = Mathf.Cos(angle * speed) * xAmplitude ;
-		point.z = Mathf.Sin(angle * speed) * yAmplitude ;
-
-		Gizmos.color = Color.white;
-		Gizmos.DrawSphere(point, 0.5f);
-
+	public override string ToString ()
+	{
+		return this.name;
 	}
+
 }

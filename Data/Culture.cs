@@ -54,8 +54,7 @@ public class Culture {
 	}
 
 
-	// TODO:
-	//FORMULA
+	// TODO: WORD FORMULA
 	// One noun (work, mind, commune) one qualifier -ism (supremacist, purism, isolationism)
 
 	//TODO: 

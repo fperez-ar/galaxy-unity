@@ -29,7 +29,6 @@ public class UICelestialBodyElement : UIListElement<CelestialBody>, IPointerClic
 	}
 
 	public void GoToPlanet(){
-		//TODO: ??
 		EvHandler.ExecuteEv (UIEvent.ENTER_PLT, refObj.transform);
 	}
 
