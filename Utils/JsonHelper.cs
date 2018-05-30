@@ -8,7 +8,7 @@ public static class JsonHelper  {
 	//YouObject[] objects = JsonHelper.getJsonArray<YouObject> (jsonString);
 	public static T[] getJsonArray<T>(string json)
 	{
-		UnityEngine.Debug.Log("loading \b"+json);
+		//UnityEngine.Debug.Log("loading \b"+json);
 		Wrapper<T> wrapper = UnityEngine.JsonUtility.FromJson<Wrapper<T>> (json);
 		return wrapper.array;
 	}

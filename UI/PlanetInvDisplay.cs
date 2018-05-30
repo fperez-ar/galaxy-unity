@@ -42,13 +42,13 @@ public class PlanetInvDisplay : MonoBehaviour
 	}
 
 
-	void updatePlanetText (object oPlanet)
+	void updatePlanetText (object oPlanetInfo)
 	{
-		Planet p = (Planet)oPlanet;
+		Planet p = (Planet) ((object[])oPlanetInfo)[0];
+		int discoLvl = (int)((object[])oPlanetInfo)[1];
 		clear ();
 		//Depending on planet state, show different info
-		DisplayText (p.name, planetNameTxt);
-
+		evalDiscoveryLevel (p, discoLvl);
 	}
 
 	void updateSunText (object oSun)
@@ -75,5 +75,24 @@ public class PlanetInvDisplay : MonoBehaviour
 		}
 	}
 
-
+	void evalDiscoveryLevel (Planet planet, int discoLvl)
+	{
+		//<>
+		DisplayText ("?????", planetNameTxt);
+		if (discoLvl >= DiscoveryProgress.Discovered ) {
+			DisplayText (planet.name, planetNameTxt);
+		} 
+		if (discoLvl >= DiscoveryProgress.Probed ) {
+			//show resources tab
+			mineActionBtn.SetActive (true);
+			//show invade/combat btn if it's civilized
+			if (planet.hasCivilization) 
+			{
+				invadeActionBtn.SetActive (true);
+			}
+		} 
+		if (discoLvl  <= DiscoveryProgress.Invaded) {
+			probeActionBtn.SetActive (true);
+		}
+	}
 }

@@ -77,6 +77,11 @@ public class PlayerShip : MonoBehaviour {
 		return resources.contains (resourceName);
 	}
 
+	public void modifyResource(string resourceName, int byQuantity) {
+		resources.modify(resourceName, byQuantity);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+	}
+
 	public int getPopulation() {
 		return dominantSpecies.population;
 	}

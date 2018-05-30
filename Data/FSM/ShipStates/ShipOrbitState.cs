@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 public class ShipOrbitState : State {
-	
+
 	private Vector3 point;
 	private Transform parent;
 	public Transform target;
 	private float angle = 0, speed = 1;
 	private Vector2 baseAmplitude = Vector2.one, amplitude;
 
-	public ShipOrbitState (Transform ship, ref float orbitSpeed, ref float amplitudeX, ref float amplitudeY)
+	public ShipOrbitState (Transform ship, float orbitSpeed, float amplitudeX, float amplitudeY)
 	{
 		parent = ship;
 		speed = orbitSpeed;
@@ -36,6 +36,7 @@ public class ShipOrbitState : State {
 		parent.position = Vector3.Lerp (parent.position, target.position + point, Time.deltaTime);
 		//TODO: Keep ship perpendicular to planet surface, looking ahead, cam looking at planet
 
-		//parent.forward = target.position + point - (future_point 
+		//parent.forward = target.position + point
+		parent.right = parent.position - target.position;
 	}
 }

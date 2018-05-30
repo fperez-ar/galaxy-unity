@@ -12,7 +12,7 @@ public class ShipMoveToState : State
 	private float speed, cutOffPerc, cutOffDistance;
 	private Quaternion finalRotation;
 
-	public ShipMoveToState (Transform ship, ref float movementSpeed, float cuttOffPercentage)
+	public ShipMoveToState (Transform ship, float movementSpeed, float cuttOffPercentage)
 	{
 		parent = ship;
 		speed = movementSpeed;
@@ -23,11 +23,7 @@ public class ShipMoveToState : State
 	{
 		finalRotation = Quaternion.LookRotation (target.position - parent.position);
 		cutOffDistance = cutOffPerc * Vector3.Distance (parent.position, target.position);
-		Debug.Log ("cutOff Perc " + cutOffPerc);
-		Debug.Log ("cutOff Distance " + cutOffDistance);
-		Debug.Log ("total Distance " + Vector3.Distance (parent.position, target.position));
-//		Vector3 heading = target.position - parent.position;
-//		Vector3 extents = parent.GetComponent <Renderer> ().bounds.extents;
+
 	}
 
 	public override void Update ()
@@ -35,7 +31,6 @@ public class ShipMoveToState : State
 		float curSpeed = (1 / speed);
 		float distance = (target.position - parent.position).sqrMagnitude;
 		if ( distance <= cutOffDistance ) {
-			Debug.Log ("distance " + distance);
 			NextState ();
 		} else {
 			//snappier >> //parent.forward = Vector3.Lerp(parent.forward, objective.position - parent.position, speed * Time.deltaTime);

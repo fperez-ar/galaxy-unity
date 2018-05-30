@@ -11,7 +11,7 @@ public class Planet : CelestialBody
 	public Species dominantSpecies = null;
 
 	public ResourceInventory resources = new ResourceInventory ();
-	private int resourcePoints = -1;
+	private int resourcePoints = -1, probeDifficulty = 1, mineEfficiency = 1;
 
 	private Transform sun;
 	public float xAmplitude = 100, yAmplitude = 100;
@@ -48,11 +48,18 @@ public class Planet : CelestialBody
 	{
 		resources.addRange (RandomExt.rndResourcesFromFile (rmax));
 		resourcePoints = rmax;
+		mineEfficiency = (BaseVals.maxResource * 10)/rmax;//somewhat related with resource availability
+		probeDifficulty = rmax / 2;//atmosphere elements, yada yada
 	}
 
 	public int getResourcePoints ()
 	{
 		return resourcePoints / BaseVals.maxResource;
+	}
+
+	public int getProbeDifficulty()
+	{
+		return probeDifficulty;
 	}
 
 	public string getResourcesList ()

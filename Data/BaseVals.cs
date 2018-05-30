@@ -1,6 +1,6 @@
 ﻿
 public static class BaseVals {
-
+	
 	public const string StatsFormat = "F2";
 	public const float Agressiveness = 10;
 	public const float Technology = 10;
@@ -20,4 +20,5 @@ public static class BaseVals {
 	public const int maxPopulation = int.MaxValue;
 
 	public const string BaseTroops = "Infantry";
+	public const string ResProbes = "Probes";
 }

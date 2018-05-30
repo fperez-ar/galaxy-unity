@@ -13,14 +13,17 @@ public class UICelestialBodyElement : UIListElement<CelestialBody>, IPointerClic
 	{
 		this.gameObject.SetActive (true);
 		bodyNameText.text = c.name;
-
-		Planet p = (Planet) c;
-		if ( p != null) {
-			if ( p.hasCivilization ) {
-				raceNameText.text = p.dominantSpecies.name;
+		refObj = c;
+		/*
+		if (c is Planet) {	
+			Planet p = (Planet)c;
+			if (p != null) {
+				if (p.hasCivilization) {
+					raceNameText.text = p.dominantSpecies.name;
+				}
 			}
 		}
-		refObj = c;
+		*/
 	}
 
 	public override void unset ()

@@ -8,17 +8,16 @@ public class GameHandler : MonoBehaviour
 	{
 		explore,
 		orbit,
-		preparation,
-		//pre-attack
+		preparation, //pre-attack
 		attack,
 	};
 
 	public GamePhase phase;
+	private DiscoveryHistory discHistory;
 	private Planet planetSelectd;
 	public AnimHandler anim;
 	public PlanetIntelligence pI;
 	public PlayerShip pShip;
-	public Timer time;
 
 	#if UNITY_EDITOR
 	public Transform debug_planet;
@@ -26,14 +25,19 @@ public class GameHandler : MonoBehaviour
 
 	void Awake ()
 	{
+		//Application.wantsToQuit += ;
 		anim.awake ();
 		pI.awake ();
+		discHistory = new DiscoveryHistory ();
+		EvHandler.RegisterEv (GameEvent.ORBIT_PLT, selectPlanet);
+		EvHandler.RegisterEv (GameEvent.SELECT_PLT, selectPlanet);
+		EvHandler.RegisterEv (GameEvent.PROBE_PLT, probePlanet);
 		EvHandler.RegisterEv (GameEvent.MINE_PLT, minePlanet);
 		EvHandler.RegisterEv (GameEvent.INVADE_PLT, invadePlanet);
 		EvHandler.RegisterEv (GameEvent.RESOLVE_CBT_PHASE, resolveCombat);
 		EvHandler.RegisterEv (UIEvent.ANIM_IDLE, IdleAnim);
 		EvHandler.RegisterEv (UIEvent.ANIM_CON, ContinueAnim);
-		EvHandler.RegisterEv (UIEvent.SHOW_PLANET_INFO, setCurrentPlanet);
+		//EvHandler.RegisterEv (UIEvent.SHOW_PLANET_INFO, setCurrentPlanet);
 		GameMode.setMode (GameState.NAVEGATION);
 		#if UNITY_EDITOR
 		Invoke ("debug", 0.5f);
@@ -54,7 +58,6 @@ public class GameHandler : MonoBehaviour
 		anim.update ();//camera work should go to lateupdate if it jitters
 	}
 
-
 	void IdleAnim ()
 	{
 		anim.Suspend ();
@@ -64,24 +67,46 @@ public class GameHandler : MonoBehaviour
 	{
 	}
 
-	void setCurrentPlanet (object oPlanet)
-	{
-		//THIS MIGHT NOT WORK IF THE LOGIC FOR DISPLAYING PLANET INFO CHANGES
-		planetSelectd = (Planet)oPlanet;
-		pI.setCurrentPlanet (planetSelectd);
 
+	void selectPlanet(object oBody)
+	{
+		if (oBody is Planet) {
+			planetSelectd = (Planet)oBody;
+			pI.setCurrentPlanet (planetSelectd);
+			discHistory.add (planetSelectd.name);
+			showPlanetInfo (planetSelectd);
+		} else if (oBody is Sun) {
+			EvHandler.ExecuteEv (UIEvent.SHOW_SUN_INFO, oBody);
+		}
 	}
 
-	void probePlanet (object oPlanet)
-	{
-		//THIS MIGHT NOT WORK IF THE LOGIC FOR DISPLAYING PLANET INFO CHANGES
-		planetSelectd = (Planet)oPlanet;
-		if (pShip.hasResources ("probe")) {
-			pShip.removeResource ("probe");
-			//TODO: SHOW PLANET INFO
-			EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
 
+	void probePlanet (object oBody)
+	{
+		print("attempting to probe");
+		//THIS MIGHT NOT WORK IF THE LOGIC FOR DISPLAYING PLANET INFO CHANGES
+		if (oBody is Planet) {
+			planetSelectd = (Planet)oBody;
+			int probeDiff = planetSelectd.getProbeDifficulty ();
+
+			if (pShip.hasResources (BaseVals.ResProbes)) {
+				pShip.modifyResource (BaseVals.ResProbes, probeDiff);
+				showPlanetInfo (planetSelectd);
+			} else {
+				print("No probes");
+				EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No probes available.");
+			}
+		} else if (oBody is Sun) {
+			EvHandler.ExecuteEv (UIEvent.SHOW_SUN_INFO, oBody);
 		}
+	}
+
+
+	void showPlanetInfo(Planet planet)
+	{
+		int discoveryLvl = discHistory.getDiscoveryLevel (planet.name);
+		object msg = new object[]{ planet, discoveryLvl};
+		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, msg);
 	}
 
 	void minePlanet ()
@@ -92,8 +117,6 @@ public class GameHandler : MonoBehaviour
 		planetSelectd.resources.clear ();
 
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
-		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
-
 	}
 
 	void invadePlanet ()
@@ -106,12 +129,12 @@ public class GameHandler : MonoBehaviour
 		EvHandler.ExecuteEv (GameEvent.PREPARATION_PHASE);
 		EvHandler.ExecuteEv (GameEvent.PREPARATION_PHASE, Mathf.Abs (atkT - defT));
 
-		UpdatePanel ();
+		UpdateCombatPanel ();
 	}
 
 	void resolveCombat (object oTrps)
 	{
-		Species atkSp = pShip.dominantSpecies;			
+		Species atkSp = pShip.dominantSpecies;
 		Species defSp = planetSelectd.dominantSpecies;
 
 		object[] troopNames = (object[])oTrps;
@@ -139,7 +162,7 @@ public class GameHandler : MonoBehaviour
 		//EvHandler.ExecuteEv (UIEvent.HIDE_COMBAT_PANEL);
 	}
 
-	void UpdatePanel ()
+	void UpdateCombatPanel ()
 	{
 		Species atk = pShip.dominantSpecies;
 		Species def = planetSelectd.dominantSpecies;
@@ -175,7 +198,6 @@ public class GameHandler : MonoBehaviour
 
 	public void OnApplicationQuit ()
 	{
-		Application.CancelQuit ();
 		SaveManager.Save (pShip, quit);
 	}
 

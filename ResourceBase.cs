@@ -2,8 +2,6 @@
 [System.Serializable]
 public class ResourceBase {
 	
-	public const int maxResourcePoints = 10;
-
 	public string name = "";
 	public int quantity = 0;
 

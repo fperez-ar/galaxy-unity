@@ -14,8 +14,6 @@ public class EvDispatcher : MonoBehaviour{
 	public GameEvent gameEvent;
 	public UIEvent uiEvent;
 
-
-
 	public void DispatchEvent(object o){
 		string ev = null;
 		if (dispatchEventType.Equals (EventTypes.GameEvent)) {

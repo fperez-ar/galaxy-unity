@@ -9,15 +9,14 @@ public class MoveCamState : CamState {
 	private Collider lastCol;
 	private Transform transform;
 	private Vector3 baseMousePos = Vector3.zero;
-	private float moveSpeed = 0.2f, rotSpeed = 0.8f, zoomSpeed = 10;
+	private float rotSpeed = 0.8f, camRotSpeed;
 
-	public MoveCamState (Camera _cam, Transform _transform, float _moveSpeed, float _rotSpeed, float _zoomSpeed)
+	public MoveCamState (Camera _cam, Transform _transform, float _rotSpeed, float _camRotSpeed)
 	{
 		cam = _cam;
 		transform = _transform;
-		moveSpeed = _moveSpeed;
-		zoomSpeed = _zoomSpeed;
 		rotSpeed = _rotSpeed;
+		camRotSpeed = _camRotSpeed;
 	}
 
 	public override void Update ()
@@ -26,11 +25,11 @@ public class MoveCamState : CamState {
 			if ( lastCol ) EvHandler.ExecuteEv (UIEvent.ENTER_PLT, lastCol.transform);
 		}
 
-		// Zoom
+		/* Zoom
 		if (Input.GetAxis ("Mouse ScrollWheel") != 0) {
 			transform.position += transform.forward * Input.GetAxis ("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
 		}
-
+		*/
 		//Rotation
 		if (Input.GetMouseButtonDown (0)) {
 
@@ -47,10 +46,10 @@ public class MoveCamState : CamState {
 
 				var p = lastCol.GetComponent <Planet> ();
 				if (p) {
-					EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, p);
+					EvHandler.ExecuteEv (GameEvent.SELECT_PLT, p);
 				} else {
 					var s = lastCol.GetComponent <Sun> ();
-					EvHandler.ExecuteEv (UIEvent.SHOW_SUN_INFO, s);
+					EvHandler.ExecuteEv (GameEvent.SELECT_PLT, s);
 				}
 				EvHandler.ExecuteEv (UIEvent.ANIM_IDLE);
 			}
@@ -83,11 +82,14 @@ public class MoveCamState : CamState {
 			baseMousePos = Input.mousePosition;
 		}
 		if (Input.GetMouseButton (1)) {
-			var deltaMouse = (baseMousePos - Input.mousePosition);
-			transform.RotateAround (cam.transform.position, transform.up, deltaMouse.x * rotSpeed * Time.deltaTime);
-			//transform.RotateAround (cam.transform.position, transform.right, deltaMouse.y * rotSpeed * Time.deltaTime);
-			//transform.position += transform.right * deltaMouse.x * moveSpeed * Time.deltaTime;
-			//transform.position += transform.up * deltaMouse.y * moveSpeed * Time.deltaTime;
+
+			//Vector3 deltaMouse = (baseMousePos - Input.mousePosition);
+
+			//Debug.Log (deltaMouse);
+			//cam.transform.RotateAround (cam.transform.position, transform.right, deltaMouse.y * Time.deltaTime);
+			float speed = camRotSpeed * Input.GetAxis ("Mouse X") * Time.deltaTime;
+
+			cam.transform.RotateAround (cam.transform.position, transform.up, speed);
 		}
 	}
 

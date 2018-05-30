@@ -25,8 +25,8 @@ public class AnimHandler : MonoBehaviour
 	{
 		fsm = new TypeDiFSM ();
 		idleState = new ShipState ();
-		moveToState = new ShipMoveToState (ship, ref movementSpeed, cutoffPerc);
-		orbitState = new ShipOrbitState (ship, ref orbitSpeed, ref amplitude.x, ref amplitude.y);
+		moveToState = new ShipMoveToState (ship, movementSpeed, cutoffPerc);
+		orbitState = new ShipOrbitState (ship, orbitSpeed, amplitude.x, amplitude.y);
 		moveToState.next = orbitState;
 		fsm.Add (idleState);
 		fsm.Add (orbitState);
@@ -58,7 +58,7 @@ public class AnimHandler : MonoBehaviour
 
 	public void Resume ()
 	{
-		
+
 	}
 
 
