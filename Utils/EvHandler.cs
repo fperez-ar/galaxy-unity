@@ -152,7 +152,7 @@ public enum UIEvent
 //Game Logic events
 public enum GameEvent
 {
-	ORBIT_PLT, SELECT_PLT,
+	ORBIT_PLT, SELECT_BODY,
 	//planet interaction
 	PROBE_PLT, MINE_PLT, ATTACK_PLT, INVADE_PLT,
 	//combat

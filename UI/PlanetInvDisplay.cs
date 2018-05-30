@@ -78,11 +78,14 @@ public class PlanetInvDisplay : MonoBehaviour
 	void evalDiscoveryLevel (Planet planet, int discoLvl)
 	{
 		//<>
+		print (discoLvl);
 		DisplayText ("?????", planetNameTxt);
 		if (discoLvl >= DiscoveryProgress.Discovered ) {
+			print ("Discovered");
 			DisplayText (planet.name, planetNameTxt);
 		} 
 		if (discoLvl >= DiscoveryProgress.Probed ) {
+			print ("Probed");
 			//show resources tab
 			mineActionBtn.SetActive (true);
 			//show invade/combat btn if it's civilized

@@ -46,10 +46,10 @@ public class MoveCamState : CamState {
 
 				var p = lastCol.GetComponent <Planet> ();
 				if (p) {
-					EvHandler.ExecuteEv (GameEvent.SELECT_PLT, p);
+					EvHandler.ExecuteEv (GameEvent.SELECT_BODY, p);
 				} else {
 					var s = lastCol.GetComponent <Sun> ();
-					EvHandler.ExecuteEv (GameEvent.SELECT_PLT, s);
+					EvHandler.ExecuteEv (GameEvent.SELECT_BODY, s);
 				}
 				EvHandler.ExecuteEv (UIEvent.ANIM_IDLE);
 			}

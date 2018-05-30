@@ -40,7 +40,7 @@ public class DiscoveryHistory
 public static class DiscoveryProgress
 {
 	public const int Undiscovered = 0;
-	public const int Discovered = 10;
-	public const int Probed = 50;
-	public const int Invaded = 100;
+	public const int Discovered = 1;
+	public const int Probed = 25;
+	public const int Invaded = 50;
 }

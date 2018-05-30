@@ -18,6 +18,7 @@ public class GameHandler : MonoBehaviour
 	public AnimHandler anim;
 	public PlanetIntelligence pI;
 	public PlayerShip pShip;
+	private int initialDiscoveryLvl = 1;
 
 	#if UNITY_EDITOR
 	public Transform debug_planet;
@@ -29,8 +30,8 @@ public class GameHandler : MonoBehaviour
 		anim.awake ();
 		pI.awake ();
 		discHistory = new DiscoveryHistory ();
-		EvHandler.RegisterEv (GameEvent.ORBIT_PLT, selectPlanet);
-		EvHandler.RegisterEv (GameEvent.SELECT_PLT, selectPlanet);
+		EvHandler.RegisterEv (GameEvent.ORBIT_PLT, selectBody);
+		EvHandler.RegisterEv (GameEvent.SELECT_BODY, selectBody);
 		EvHandler.RegisterEv (GameEvent.PROBE_PLT, probePlanet);
 		EvHandler.RegisterEv (GameEvent.MINE_PLT, minePlanet);
 		EvHandler.RegisterEv (GameEvent.INVADE_PLT, invadePlanet);
@@ -68,54 +69,48 @@ public class GameHandler : MonoBehaviour
 	}
 
 
-	void selectPlanet(object oBody)
+	void selectBody(object oBody)
 	{
 		if (oBody is Planet) {
 			planetSelectd = (Planet)oBody;
 			pI.setCurrentPlanet (planetSelectd);
-			discHistory.add (planetSelectd.name);
+			discHistory.add (planetSelectd.name, initialDiscoveryLvl);
 			showPlanetInfo (planetSelectd);
 		} else if (oBody is Sun) {
 			EvHandler.ExecuteEv (UIEvent.SHOW_SUN_INFO, oBody);
 		}
 	}
 
-
-	void probePlanet (object oBody)
+	void probePlanet ()
 	{
-		print("attempting to probe");
-		//THIS MIGHT NOT WORK IF THE LOGIC FOR DISPLAYING PLANET INFO CHANGES
-		if (oBody is Planet) {
-			planetSelectd = (Planet)oBody;
-			int probeDiff = planetSelectd.getProbeDifficulty ();
-
-			if (pShip.hasResources (BaseVals.ResProbes)) {
-				pShip.modifyResource (BaseVals.ResProbes, probeDiff);
-				showPlanetInfo (planetSelectd);
-			} else {
-				print("No probes");
-				EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No probes available.");
-			}
-		} else if (oBody is Sun) {
-			EvHandler.ExecuteEv (UIEvent.SHOW_SUN_INFO, oBody);
+		print("Attempting to probe");
+		//when probing, you already orbit the planet and thus have it selected...
+		int probeDiff = planetSelectd.getProbeDifficulty ();
+		print("Probe difficulty "+probeDiff);
+		if (pShip.hasResources (BaseVals.ResProbes, probeDiff)) {
+			pShip.modifyResource (BaseVals.ResProbes, -probeDiff);
+			discHistory.modifyDiscoveryLevel (planetSelectd.name, probeDiff); 
+			showPlanetInfo (planetSelectd);
+		} else {
+			print("No probes");
+			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No probes available.");
 		}
-	}
 
+	}
 
 	void showPlanetInfo(Planet planet)
 	{
 		int discoveryLvl = discHistory.getDiscoveryLevel (planet.name);
-		object msg = new object[]{ planet, discoveryLvl};
+		print ("discoveryLvl = " + discoveryLvl);
+		object msg = new object[]{planet, discoveryLvl};
 		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, msg);
 	}
 
 	void minePlanet ()
 	{
 		var rs = planetSelectd.resources.getArray ();
-
 		pShip.resources.addRange (rs);
 		planetSelectd.resources.clear ();
-
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 

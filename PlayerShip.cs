@@ -76,6 +76,9 @@ public class PlayerShip : MonoBehaviour {
 	public bool hasResources(string resourceName) {
 		return resources.contains (resourceName);
 	}
+	public bool hasResources(string resourceName, int quantity) {
+		return resources.getQuantity (resourceName) >= quantity ? true : false;
+	}
 
 	public void modifyResource(string resourceName, int byQuantity) {
 		resources.modify(resourceName, byQuantity);
