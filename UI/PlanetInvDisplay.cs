@@ -12,7 +12,7 @@ public class PlanetInvDisplay : MonoBehaviour
 	//public UnityEngine.UI.Text planetCultureTxt;
 
 	public GameObject probeActionBtn;
-	public GameObject mineActionBtn;
+
 	public GameObject invadeActionBtn;
 
 	void Awake ()
@@ -38,14 +38,14 @@ public class PlanetInvDisplay : MonoBehaviour
 		//planetCultureTxt.text = string.Empty;
 		probeActionBtn.SetActive (false);
 		invadeActionBtn.SetActive (false);
-		mineActionBtn.SetActive (false);
+
 	}
 
 
 	void updatePlanetText (object oPlanetInfo)
 	{
-		Planet p = (Planet) ((object[])oPlanetInfo)[0];
-		int discoLvl = (int)((object[])oPlanetInfo)[1];
+		Planet p = (Planet)((object[])oPlanetInfo) [0];
+		int discoLvl = (int)((object[])oPlanetInfo) [1];
 		clear ();
 		//Depending on planet state, show different info
 		evalDiscoveryLevel (p, discoLvl);
@@ -75,27 +75,28 @@ public class PlanetInvDisplay : MonoBehaviour
 		}
 	}
 
-	void evalDiscoveryLevel (Planet planet, int discoLvl)
+	void evalDiscoveryLevel (Planet planet)
 	{
 		//<>
-		print (discoLvl);
-		DisplayText ("?????", planetNameTxt);
-		if (discoLvl >= DiscoveryProgress.Discovered ) {
+		ExplotationState discoThrs = planet.getExplotationState ();
+		switch (discoThrs) {
+		case ExplotationState.undiscovered:
+			DisplayText ("?????", planetNameTxt);
+			break;
+
+		case ExplotationState.discovered:
 			print ("Discovered");
 			DisplayText (planet.name, planetNameTxt);
-		} 
-		if (discoLvl >= DiscoveryProgress.Probed ) {
+			break;
+
+		case ExplotationState.probed:
 			print ("Probed");
-			//show resources tab
-			mineActionBtn.SetActive (true);
-			//show invade/combat btn if it's civilized
-			if (planet.hasCivilization) 
-			{
+				//show resources tab
+			if (planet.hasCivilization) {
 				invadeActionBtn.SetActive (true);
 			}
-		} 
-		if (discoLvl  <= DiscoveryProgress.Invaded) {
-			probeActionBtn.SetActive (true);
+			break;
 		}
+
 	}
 }

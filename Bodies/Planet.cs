@@ -5,13 +5,12 @@ using UnityEngine;
 public class Planet : CelestialBody
 {
 
-
 	[HideInInspector]
 	public bool hasCivilization = false;
 	public Species dominantSpecies = null;
 
 	public ResourceInventory resources = new ResourceInventory ();
-	private int resourcePoints = -1, probeDifficulty = 1, mineEfficiency = 1;
+	private int resourcePoints = -1;
 
 	private Transform sun;
 	public float xAmplitude = 100, yAmplitude = 100;
@@ -48,8 +47,8 @@ public class Planet : CelestialBody
 	{
 		resources.addRange (RandomExt.rndResourcesFromFile (rmax));
 		resourcePoints = rmax;
-		mineEfficiency = (BaseVals.maxResource * 10)/rmax;//somewhat related with resource availability
-		probeDifficulty = rmax / 2;//atmosphere elements, yada yada
+		explotation.mineEfficiency = (BaseVals.maxResource * 10)/rmax;//somewhat related with resource availability
+		explotation.probeDifficulty = rmax / 2;//atmosphere elements, yada yada
 	}
 
 	public int getResourcePoints ()
@@ -57,14 +56,20 @@ public class Planet : CelestialBody
 		return resourcePoints / BaseVals.maxResource;
 	}
 
-	public int getProbeDifficulty()
-	{
-		return probeDifficulty;
-	}
-
 	public string getResourcesList ()
 	{
 		return resources.ToString ();
+	}
+
+	public ExplotationState getExplotationState()
+	{
+		return explotation.state;
+	}
+
+	public void probe()
+	{
+		//do something with resources
+		explotation.probe ();
 	}
 
 	void FixedUpdate ()

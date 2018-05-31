@@ -75,7 +75,7 @@ public class GameHandler : MonoBehaviour
 			planetSelectd = (Planet)oBody;
 			pI.setCurrentPlanet (planetSelectd);
 			discHistory.add (planetSelectd.name, initialDiscoveryLvl);
-			showPlanetInfo (planetSelectd);
+			EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
 		} else if (oBody is Sun) {
 			EvHandler.ExecuteEv (UIEvent.SHOW_SUN_INFO, oBody);
 		}
@@ -85,12 +85,14 @@ public class GameHandler : MonoBehaviour
 	{
 		print("Attempting to probe");
 		//when probing, you already orbit the planet and thus have it selected...
-		int probeDiff = planetSelectd.getProbeDifficulty ();
-		print("Probe difficulty "+probeDiff);
+
+		planetSelectd.probe ();
+		//move following to exploitation probe method, determine how to act on it
+		//TODO: Mining now depends on: probe q + discovery lvl / plt eff 
 		if (pShip.hasResources (BaseVals.ResProbes, probeDiff)) {
 			pShip.modifyResource (BaseVals.ResProbes, -probeDiff);
-			discHistory.modifyDiscoveryLevel (planetSelectd.name, probeDiff); 
-			showPlanetInfo (planetSelectd);
+
+			EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
 		} else {
 			print("No probes");
 			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No probes available.");
@@ -98,20 +100,16 @@ public class GameHandler : MonoBehaviour
 
 	}
 
-	void showPlanetInfo(Planet planet)
-	{
-		int discoveryLvl = discHistory.getDiscoveryLevel (planet.name);
-		print ("discoveryLvl = " + discoveryLvl);
-		object msg = new object[]{planet, discoveryLvl};
-		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, msg);
-	}
-
 	void minePlanet ()
 	{
+		//consume probes to get resources modified (-/+|*) by mine efficiency
+		//int mineEff = planetSelectd.getMineEfficiency ();
+
 		var rs = planetSelectd.resources.getArray ();
 		pShip.resources.addRange (rs);
 		planetSelectd.resources.clear ();
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+
 	}
 
 	void invadePlanet ()

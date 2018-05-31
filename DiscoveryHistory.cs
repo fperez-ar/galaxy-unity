@@ -36,11 +36,3 @@ public class DiscoveryHistory
 		return history [entryName];
 	}
 }
-
-public static class DiscoveryProgress
-{
-	public const int Undiscovered = 0;
-	public const int Discovered = 1;
-	public const int Probed = 25;
-	public const int Invaded = 50;
-}
