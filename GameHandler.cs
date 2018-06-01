@@ -8,7 +8,8 @@ public class GameHandler : MonoBehaviour
 	{
 		explore,
 		orbit,
-		preparation, //pre-attack
+		preparation,
+		//pre-attack
 		attack,
 	};
 
@@ -32,8 +33,10 @@ public class GameHandler : MonoBehaviour
 		discHistory = new DiscoveryHistory ();
 		EvHandler.RegisterEv (GameEvent.ORBIT_PLT, selectBody);
 		EvHandler.RegisterEv (GameEvent.SELECT_BODY, selectBody);
+
+		EvHandler.RegisterEv (UIEvent.SHOW_PROBE_PANEL, setUseProbePanel);
 		EvHandler.RegisterEv (GameEvent.PROBE_PLT, probePlanet);
-		EvHandler.RegisterEv (GameEvent.MINE_PLT, minePlanet);
+		//EvHandler.RegisterEv (GameEvent.MINE_PLT, minePlanet);
 		EvHandler.RegisterEv (GameEvent.INVADE_PLT, invadePlanet);
 		EvHandler.RegisterEv (GameEvent.RESOLVE_CBT_PHASE, resolveCombat);
 		EvHandler.RegisterEv (UIEvent.ANIM_IDLE, IdleAnim);
@@ -44,17 +47,18 @@ public class GameHandler : MonoBehaviour
 		Invoke ("debug", 0.5f);
 		#endif
 	}
-
-	void debug(){
+	#if UNITY_EDITOR
+	void debug ()
+	{
 		anim.MoveTo (debug_planet);
 	}
-
-	void Update()
+	#endif
+	void Update ()
 	{
 		pI.update ();
 	}
 
-	void FixedUpdate()
+	void FixedUpdate ()
 	{
 		anim.update ();//camera work should go to lateupdate if it jitters
 	}
@@ -69,7 +73,7 @@ public class GameHandler : MonoBehaviour
 	}
 
 
-	void selectBody(object oBody)
+	void selectBody (object oBody)
 	{
 		if (oBody is Planet) {
 			planetSelectd = (Planet)oBody;
@@ -81,36 +85,29 @@ public class GameHandler : MonoBehaviour
 		}
 	}
 
-	void probePlanet ()
+	// TODO: Move all setting up ui elems code to a composite class
+	public void setUseProbePanel ()
 	{
-		print("Attempting to probe");
-		//when probing, you already orbit the planet and thus have it selected...
-
-		planetSelectd.probe ();
-		//move following to exploitation probe method, determine how to act on it
-		//TODO: Mining now depends on: probe q + discovery lvl / plt eff 
-		if (pShip.hasResources (BaseVals.ResProbes, probeDiff)) {
-			pShip.modifyResource (BaseVals.ResProbes, -probeDiff);
-
-			EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
+		if (pShip.hasResources (BaseVals.ResProbes)) 
+		{
+			EvHandler.ExecuteEv (UIEvent.SHOW_PROBE_PANEL, pShip.getResource (BaseVals.ResProbes));
 		} else {
-			print("No probes");
-			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No probes available.");
+			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No probes available");
 		}
-
 	}
 
-	void minePlanet ()
+	void probePlanet (object oQuantityProbes)
 	{
-		//consume probes to get resources modified (-/+|*) by mine efficiency
-		//int mineEff = planetSelectd.getMineEfficiency ();
-
-		var rs = planetSelectd.resources.getArray ();
-		pShip.resources.addRange (rs);
-		planetSelectd.resources.clear ();
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
-
+		print ("Attempting to probe");
+		//when probing, you already orbit the planet and thus have it selected...
+		int probeQ = (int)oQuantityProbes;//pShip.getResource (BaseVals.ResProbes).quantity;
+		if (!pShip.hasResources (BaseVals.ResProbes, probeQ))
+			throw new System.Exception ("Attempting to use more probes than actually available");
+		
+		planetSelectd.probe (probeQ);
+		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);	
 	}
+
 
 	void invadePlanet ()
 	{

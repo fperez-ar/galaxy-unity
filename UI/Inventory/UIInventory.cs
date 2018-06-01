@@ -55,7 +55,6 @@ public abstract class UIInventory<T> : MonoBehaviour, IToggleable where T : clas
 	protected virtual void update ()
 	{
 		clear ();
-
 	}
 
 	protected virtual void clear ()

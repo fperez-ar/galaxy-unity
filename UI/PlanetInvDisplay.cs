@@ -12,7 +12,6 @@ public class PlanetInvDisplay : MonoBehaviour
 	//public UnityEngine.UI.Text planetCultureTxt;
 
 	public GameObject probeActionBtn;
-
 	public GameObject invadeActionBtn;
 
 	void Awake ()
@@ -44,11 +43,10 @@ public class PlanetInvDisplay : MonoBehaviour
 
 	void updatePlanetText (object oPlanetInfo)
 	{
-		Planet p = (Planet)((object[])oPlanetInfo) [0];
-		int discoLvl = (int)((object[])oPlanetInfo) [1];
+		Planet p = (Planet) oPlanetInfo;
 		clear ();
 		//Depending on planet state, show different info
-		evalDiscoveryLevel (p, discoLvl);
+		evalDiscoveryLevel (p);
 	}
 
 	void updateSunText (object oSun)
@@ -78,8 +76,11 @@ public class PlanetInvDisplay : MonoBehaviour
 	void evalDiscoveryLevel (Planet planet)
 	{
 		//<>
+		probeActionBtn.SetActive (true);
 		ExplotationState discoThrs = planet.getExplotationState ();
+
 		switch (discoThrs) {
+
 		case ExplotationState.undiscovered:
 			DisplayText ("?????", planetNameTxt);
 			break;
@@ -91,7 +92,7 @@ public class PlanetInvDisplay : MonoBehaviour
 
 		case ExplotationState.probed:
 			print ("Probed");
-				//show resources tab
+			probeActionBtn.SetActive (false);
 			if (planet.hasCivilization) {
 				invadeActionBtn.SetActive (true);
 			}

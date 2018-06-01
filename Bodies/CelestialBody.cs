@@ -5,5 +5,5 @@ using UnityEngine;
 
 public class CelestialBody : MonoBehaviour {
 
-	protected Exploitation explotation;
+	protected Exploitation explotation = new Exploitation();
 }

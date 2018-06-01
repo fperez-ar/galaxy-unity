@@ -23,7 +23,7 @@ public class UICombatPanel : MonoBehaviour {
 		pltCombatPanel.onRemove += updatePlanetSide;
 
 		EvHandler.RegisterEv (UIEvent.SHOW_COMBAT_PANEL, showCombatPanel);
-		EvHandler.RegisterEv (UIEvent.HIDE_COMBAT_PANEL, hideCombatPanel);
+		//EvHandler.RegisterEv (UIEvent.HIDE_COMBAT_PANEL, hideCombatPanel);
 		EvHandler.RegisterEv (UIEvent.UPDATE_COMBAT_INFO, updatePanel);
 
 		EvHandler.RegisterEv (GameEvent.COMBAT_CALCULATION, combatCalc);
@@ -53,7 +53,7 @@ public class UICombatPanel : MonoBehaviour {
 
 	public void HideViaButton(){
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
-		EvHandler.ExecuteEv (UIEvent.HIDE_COMBAT_PANEL);
+		hideCombatPanel ();
 		EvHandler.ExecuteEv (GameEvent.EXPLORE_PHASE);
 	}
 

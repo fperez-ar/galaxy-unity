@@ -13,7 +13,7 @@ public class UIResourceElement : UIListElement<ResourceBase>, IPointerClickHandl
 	public override void set(ResourceBase r) {
 		this.gameObject.SetActive (true);
 		img.color = Color.Lerp(Color.red, Color.green, r.normalizedQuantity );
-		quantity.color = ColorUtil.getOpposite (img.color);
+		//quantity.color = ColorUtil.getOpposite (img.color);
 		resName.text = r.name;
 		quantity.text = r.quantity.ToString ();
 		refObj = r;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor (typeof(PlanetEditor))]
+[CustomEditor (typeof(CelestialBody), true)]
 public class PlanetEditor : Editor
 {
 	GUIStyle style = new GUIStyle();
@@ -13,6 +13,7 @@ public class PlanetEditor : Editor
 		style.normal.textColor = Color.white;
 		style.fontSize = 12;
 	}
+
 	void OnSceneGUI ()
 	{
 		CelestialBody c = target as CelestialBody;

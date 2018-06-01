@@ -7,6 +7,7 @@ public abstract class UIListElement<T> : MonoBehaviour where T : class
 {
 
 	protected T refObj;
+	public T getRefObj { get { return refObj;} }
 
 	public virtual void set (T t)
 	{
@@ -17,4 +18,5 @@ public abstract class UIListElement<T> : MonoBehaviour where T : class
 		this.gameObject.SetActive (false);
 		refObj = null;//default(T);
 	}
+
 }

@@ -8,15 +8,13 @@ public class Planet : CelestialBody
 	[HideInInspector]
 	public bool hasCivilization = false;
 	public Species dominantSpecies = null;
-
 	public ResourceInventory resources = new ResourceInventory ();
-	private int resourcePoints = -1;
-
-	private Transform sun;
 	public float xAmplitude = 100, yAmplitude = 100;
 	public float orbitSpeed;
 	[HideInInspector]
 	public float baseAngle = 180;
+	private Transform sun;
+	private int resourcePoints = -1;
 
 	public void initCiv ()
 	{
@@ -66,10 +64,10 @@ public class Planet : CelestialBody
 		return explotation.state;
 	}
 
-	public void probe()
+
+	public void probe(int probeQuantity)
 	{
-		//do something with resources
-		explotation.probe ();
+		explotation.probe (probeQuantity);
 	}
 
 	void FixedUpdate ()
@@ -80,7 +78,6 @@ public class Planet : CelestialBody
 
 	void orbit ()
 	{
-
 		float angle = Mathf.Deg2Rad * baseAngle * Time.time;
 		float x = Mathf.Cos (angle * orbitSpeed) * xAmplitude;
 		float z = Mathf.Sin (angle * orbitSpeed) * yAmplitude;
