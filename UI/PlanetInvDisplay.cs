@@ -79,25 +79,38 @@ public class PlanetInvDisplay : MonoBehaviour
 		probeActionBtn.SetActive (true);
 		ExplotationState discoThrs = planet.getExplotationState ();
 
-		switch (discoThrs) {
-
-		case ExplotationState.undiscovered:
-			DisplayText ("?????", planetNameTxt);
-			break;
-
-		case ExplotationState.discovered:
-			print ("Discovered");
+		if ( discoThrs < ExplotationState.discovered ) {
+				DisplayText ("?????", planetNameTxt);
+		}else if ( discoThrs < ExplotationState.probed ) {
 			DisplayText (planet.name, planetNameTxt);
-			break;
-
-		case ExplotationState.probed:
-			print ("Probed");
-			probeActionBtn.SetActive (false);
+		}else if ( discoThrs >= ExplotationState.probed ) {
+			DisplayText (planet.name, planetNameTxt);
+			//probeActionBtn.SetActive (false);
 			if (planet.hasCivilization) {
 				invadeActionBtn.SetActive (true);
 			}
+		}
+		/*
+		switch (discoThrs) {
+			case ExplotationState.undiscovered:
+				DisplayText ("?????", planetNameTxt);
+				break;
+
+			case ExplotationState.discovered:
+				print ("Discovered");
+				DisplayText (planet.name, planetNameTxt);
+				break;
+
+			case ExplotationState.probed:
+				print ("Probed");
+				DisplayText (planet.name, planetNameTxt);
+				probeActionBtn.SetActive (false);
+				if (planet.hasCivilization) {
+					invadeActionBtn.SetActive (true);
+				}
 			break;
 		}
+		*/
 
 	}
 }

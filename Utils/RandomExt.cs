@@ -22,7 +22,7 @@ public static class RandomExt {
 		return new Vector3 (x, y, z);
 	}
 
-		
+
 	public static Vector3 rndPositionInOrbit(Transform orbitCenter, float orbitDistance){
 		return rndPositionInOrbit (orbitCenter.position, orbitDistance);
 	}
@@ -43,7 +43,7 @@ public static class RandomExt {
 		return new Vector3 (x, y, z);
 	}
 
-	//select quantity of numbers up to max
+	/// Generate n quantity of indexes, where max value is the maximum value (inclusive)
 	public static int[] rndNonRepeatingIndexes(int quantity, int maxValue){
 		//generate random indexes
 		var r = new System.Random ();
@@ -65,7 +65,7 @@ public static class RandomExt {
 		var rnd = new System.Random ();
 		int total = resourcePoints;
 		string name = "";
-		int index = 0, qua = 0; 
+		int index = 0, qua = 0;
 		int len = rnd.Next (BaseVals.minResPerPlanet, BaseVals.maxResPerPlanet);
 		List<ResourceBase> ls = new List<ResourceBase> (len);
 

@@ -7,7 +7,7 @@ public delegate void ComplexDelegate (object args);
 
 public static class EvHandler
 {
-	
+
 	private static Dictionary<string, SimpleDelegate> simpleEvs
 	= new Dictionary<string, SimpleDelegate> ();
 
@@ -22,12 +22,10 @@ public static class EvHandler
 		RegisterEv (ev.ToString (), del, additive);
 	}
 
-
 	public static void RegisterEv (UIEvent ev, ComplexDelegate del, bool additive = true)
 	{
 		RegisterEv (ev.ToString (), del, additive);
 	}
-
 
 	public static void RegisterEv (GameEvent ev, SimpleDelegate del, bool additive = true)
 	{
@@ -133,7 +131,6 @@ public static class EvHandler
 public enum UIEvent
 {
 	ENTER_PLT,
-
 	SHOW_PLANET_INFO,
 	SHOW_SUN_INFO, 		//SHOW_INV_INFO,
 	SHOW_COMBAT_PANEL,	//HIDE_COMBAT_PANEL,
@@ -160,8 +157,8 @@ public enum GameEvent
 	//troop creation
 	ADD_GENE_MAT, RM_GENE_MAT,
 	ADD_CBT_FF,	RM_CBT_FF,
+	MOD_RES,
 	//combat resolution
 	AWON, ALOST,
 
 }
-

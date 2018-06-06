@@ -41,17 +41,12 @@ public class SerializePlayerShip : Editor {
 
 	public override void OnInspectorGUI ()
 	{
-
 		serializedObject.Update ();
-
 		//base.OnInspectorGUI ();
-
 		EditorGUILayout.LabelField ("Species: ", sp.name, EditorStyles.boldLabel);
 		sp.name = EditorGUILayout.TextField (sp.name);
 
-
 		CultureSerialize ();
-
 		EditorGUILayout.Separator ();
 
 		ResourceSerialize ();
@@ -80,8 +75,9 @@ public class SerializePlayerShip : Editor {
 		EditorGUILayout.LabelField ("\t", mCulture.getTechDescription(), EditorStyles.boldLabel);
 	}
 
-	void ResourceSerialize(){
-		
+	void ResourceSerialize()
+	{
+
 		if (GUILayout.Button ("Resource Inventory")) { rfold [0] = !rfold [0]; }
 
 		if ( rfold[0] && resourcesInv != null){
@@ -121,8 +117,6 @@ public class SerializePlayerShip : Editor {
 				GUILayout.EndHorizontal ();
 			}
 		}
-
-
 	}
 
 	void GeneSerialize(){
@@ -133,7 +127,7 @@ public class SerializePlayerShip : Editor {
 			EditorGUILayout.LabelField ("Key","Values");
 			string slatedForRemoval = null;
 			foreach (var itemVal in geneticInv.traits) {
-				
+
 				GUILayout.BeginHorizontal ();
 				 EditorGUILayout.LabelField (itemVal.Key, mStrMaxWidth);
 				 if ( GUILayout.Button("x", mCharWidth)){ slatedForRemoval = itemVal.Key; }
@@ -150,11 +144,11 @@ public class SerializePlayerShip : Editor {
 
 			gfold [1] = EditorGUILayout.Foldout (gfold [1], "Add Genetic trait", true);
 			if (gfold [1]) {
-				
+
 				GUILayout.BeginHorizontal ();
 				g = (GeneticTrait) EditorGUILayout.ObjectField (g, typeof(ScriptableObject), false, m250Width);
 
-				if (GUILayout.Button ("Add", m250Width) ){					
+				if (GUILayout.Button ("Add", m250Width) ){
 					geneticInv.add (g);
 					EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 				}
@@ -305,7 +299,7 @@ public struct TrooperHelper{
 	public Troopers getTrooper(){
 		return new Troopers (name, quantity) {
 			offensiveCap = offense,
-			defensiveCap = defense,	
+			defensiveCap = defense,
 			morale = morale,
 			adaptability = adaptability
 		};

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,8 +45,8 @@ public class Planet : CelestialBody
 	{
 		resources.addRange (RandomExt.rndResourcesFromFile (rmax));
 		resourcePoints = rmax;
-		explotation.mineEfficiency = (BaseVals.maxResource * 10)/rmax;//somewhat related with resource availability
-		explotation.probeDifficulty = rmax / 2;//atmosphere elements, yada yada
+		//explotation.mineEfficiency = (BaseVals.maxResource * 10)/rmax;//somewhat related with resource availability
+		//explotation.probeDifficulty = rmax / 2;//atmosphere elements, yada yada
 	}
 
 	public int getResourcePoints ()
@@ -68,6 +68,41 @@ public class Planet : CelestialBody
 	public void probe(int probeQuantity)
 	{
 		explotation.probe (probeQuantity);
+		int resourceQ = resources.getResourcesQuantity;
+		if (resourceQ == 0) {
+			print("No resources in this planet...");
+			return;
+		}
+		print(string.Format("{0}", resourceQ));
+		int intExpState = System.Convert.ToInt32(explotation.state);
+		int mineChance = probeQuantity + intExpState;
+		print(string.Format("mining roll chance: {0} vs plt chance: {1}", mineChance, explotation.mineChance));
+		//this is just to check if you can mine
+		int mine = Random.Range(0, mineChance);
+		print ("die roll of "+mine);
+
+		if ( mine > explotation.mineChance ) {
+			int minResourceGain = probeQuantity / intExpState;
+			print(string.Format("total plt resource q {0}, min res gain {1}", resourceQ, minResourceGain));
+
+			int mineVarietyRess = (int) Random.Range(minResourceGain, explotation.mineEfficiency);
+			int mineAmountRess = (int) (probeQuantity * explotation.mineEfficiency);
+			print(string.Format("will gain {0} different resources, for a max of q:{1}", mineVarietyRess, mineAmountRess));
+
+			//genate n amount of indexes
+			int[] idxs = RandomExt.rndNonRepeatingIndexes(mineVarietyRess, resourceQ);
+			ResourceBase[] mined = new ResourceBase[mineVarietyRess];
+			ResourceBase[] res = resources.getArray();
+			print(string.Format("actual len resources {0} index q {1}", res.Length, idxs.Length));
+			for (int i = 0; i < idxs.Length; i++) {
+				string nam = res[ idxs.Length ].name;
+				int q = Random.Range(1, mineAmountRess);
+				mined[i] = new ResourceBase(nam, q); //add
+				resources.modify(nam, -q); //substract from
+				print(mined[i]);
+				EvHandler.ExecuteEv(GameEvent.MOD_RES, mined[i]);
+			}
+		}
 	}
 
 	void FixedUpdate ()
@@ -81,7 +116,6 @@ public class Planet : CelestialBody
 		float angle = Mathf.Deg2Rad * baseAngle * Time.time;
 		float x = Mathf.Cos (angle * orbitSpeed) * xAmplitude;
 		float z = Mathf.Sin (angle * orbitSpeed) * yAmplitude;
-
 		transform.position = sun.position + new Vector3 (x, 0, z) * Time.deltaTime;
 	}
 
@@ -89,5 +123,4 @@ public class Planet : CelestialBody
 	{
 		return this.name;
 	}
-
 }

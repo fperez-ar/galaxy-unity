@@ -11,7 +11,6 @@ public class PlayerShip : MonoBehaviour {
 	public ResourceInventory resources = new ResourceInventory();
 
 	void Awake() {
-		SaveManager.Load (this);
 		EvHandler.RegisterEv (GameEvent.RM_CBT_FF, removeTrooper, false);
 	}
 
@@ -58,6 +57,10 @@ public class PlayerShip : MonoBehaviour {
 		return resources.get (resourceName);
 	}
 
+	public void addResource(ResourceBase r ) {
+		resources.add (r);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+	}
 	public void addResources(ResourceBase[] rs ) {
 		resources.addRange (rs);
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
@@ -73,9 +76,14 @@ public class PlayerShip : MonoBehaviour {
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
+	public bool hasResources(ResourceBase res) {
+		return resources.contains (res);
+	}
+
 	public bool hasResources(string resourceName) {
 		return resources.contains (resourceName);
 	}
+
 	public bool hasResources(string resourceName, int quantity) {
 		return resources.getQuantity (resourceName) >= quantity ? true : false;
 	}

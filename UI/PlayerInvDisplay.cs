@@ -10,7 +10,6 @@ public class PlayerInvDisplay : MonoBehaviour {
 	public Text playerRaceTxt;
 	public Text playerPopText;
 	void Awake() {
-		
 		EvHandler.RegisterEv (UIEvent.UPDATE_INV, updateInv);
 	}
 

@@ -3,7 +3,8 @@ using System.Text;
 
 public class ResourceInventory : InventoryBase<ResourceBase>
 {
-	public int resourceQuantity = 0;
+	protected int resourceQuantity = 0;
+	public int getResourcesQuantity { get {return resourceQuantity;} }
 
 	public override void add (ResourceBase t)
 	{
@@ -41,7 +42,7 @@ public class ResourceInventory : InventoryBase<ResourceBase>
 		resourceQuantity--;
 	}
 
-	public virtual void modify (string resourceName, int q)
+	public virtual void modify (string resourceName, int q, bool additive = true)
 	{
 		if (storage.ContainsKey (resourceName)) {
 			storage [resourceName].quantity += q;

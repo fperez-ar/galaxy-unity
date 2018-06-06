@@ -14,7 +14,6 @@ public abstract class InventoryBase<T> where T : ResourceBase  {
 
 	public virtual void add(string itemName, int itemQuantity){
 		if (!storage.ContainsKey (itemName)) {
-			
 			T t = Activator.CreateInstance <T>();
 			t.name = itemName;
 			t.quantity = itemQuantity;
@@ -40,7 +39,7 @@ public abstract class InventoryBase<T> where T : ResourceBase  {
 			} else {
 				storage [t.name].quantity += t.quantity;
 			}
-			
+
 		}
 	}
 

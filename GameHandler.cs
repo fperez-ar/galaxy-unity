@@ -30,9 +30,11 @@ public class GameHandler : MonoBehaviour
 		//Application.wantsToQuit += ;
 		anim.awake ();
 		pI.awake ();
-		discHistory = new DiscoveryHistory ();
+		Load();
+
 		EvHandler.RegisterEv (GameEvent.ORBIT_PLT, selectBody);
 		EvHandler.RegisterEv (GameEvent.SELECT_BODY, selectBody);
+		EvHandler.RegisterEv (GameEvent.MOD_RES, modResource);
 
 		EvHandler.RegisterEv (UIEvent.SHOW_PROBE_PANEL, setUseProbePanel);
 		EvHandler.RegisterEv (GameEvent.PROBE_PLT, probePlanet);
@@ -72,13 +74,13 @@ public class GameHandler : MonoBehaviour
 	{
 	}
 
-
+	#region planet-interaction
 	void selectBody (object oBody)
 	{
 		if (oBody is Planet) {
 			planetSelectd = (Planet)oBody;
 			pI.setCurrentPlanet (planetSelectd);
-			discHistory.add (planetSelectd.name, initialDiscoveryLvl);
+
 			EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
 		} else if (oBody is Sun) {
 			EvHandler.ExecuteEv (UIEvent.SHOW_SUN_INFO, oBody);
@@ -88,7 +90,7 @@ public class GameHandler : MonoBehaviour
 	// TODO: Move all setting up ui elems code to a composite class
 	public void setUseProbePanel ()
 	{
-		if (pShip.hasResources (BaseVals.ResProbes)) 
+		if (pShip.hasResources (BaseVals.ResProbes))
 		{
 			EvHandler.ExecuteEv (UIEvent.SHOW_PROBE_PANEL, pShip.getResource (BaseVals.ResProbes));
 		} else {
@@ -98,16 +100,20 @@ public class GameHandler : MonoBehaviour
 
 	void probePlanet (object oQuantityProbes)
 	{
-		print ("Attempting to probe");
 		//when probing, you already orbit the planet and thus have it selected...
-		int probeQ = (int)oQuantityProbes;//pShip.getResource (BaseVals.ResProbes).quantity;
+		int probeQ = (int) oQuantityProbes;//pShip.getResource (BaseVals.ResProbes).quantity;
 		if (!pShip.hasResources (BaseVals.ResProbes, probeQ))
 			throw new System.Exception ("Attempting to use more probes than actually available");
-		
-		planetSelectd.probe (probeQ);
-		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);	
-	}
 
+		if (planetSelectd.getExplotationState() >= ExplotationState.researched) {
+				print ("Probing level: "+(int)planetSelectd.getExplotationState());
+			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "Probing ineffective.");
+			return;
+		}
+		pShip.modifyResource(BaseVals.ResProbes, -probeQ);
+		planetSelectd.probe (probeQ);
+		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
+	}
 
 	void invadePlanet ()
 	{
@@ -121,6 +127,7 @@ public class GameHandler : MonoBehaviour
 
 		UpdateCombatPanel ();
 	}
+	#endregion
 
 	void resolveCombat (object oTrps)
 	{
@@ -171,6 +178,15 @@ public class GameHandler : MonoBehaviour
 		return Troopers.sum (troopArray);
 	}
 
+	void modResource(object oRes)
+	{
+		ResourceBase r = (ResourceBase) oRes;
+		print("adding "+r);
+		pShip.addResource(r);
+		EvHandler.ExecuteEv(UIEvent.UPDATE_INV);
+	}
+
+	#region save/load management
 	public void Save ()
 	{
 		SaveManager.Save (pShip);
@@ -196,4 +212,6 @@ public class GameHandler : MonoBehaviour
 		Save ();
 		Application.Quit ();
 	}
+
+	#endregion
 }
