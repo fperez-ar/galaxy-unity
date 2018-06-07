@@ -37,7 +37,6 @@ public class PlanetInvDisplay : MonoBehaviour
 		//planetCultureTxt.text = string.Empty;
 		probeActionBtn.SetActive (false);
 		invadeActionBtn.SetActive (false);
-
 	}
 
 
@@ -54,6 +53,7 @@ public class PlanetInvDisplay : MonoBehaviour
 		Sun s = ((Sun)oSun);
 		clear ();
 		planetNameTxt.text = s.name;
+		probeActionBtn.SetActive (true);
 	}
 
 	void DisplayText (string displayStr, UnityEngine.UI.Text displayTxt)

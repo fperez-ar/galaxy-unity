@@ -28,15 +28,16 @@ public class PlanetIntelligence : MonoBehaviour {
 
 	void enterCombat(){
 		float t = (currCulture.technology / BaseVals.Technology);
-		deliberationTimer = new Timer (t);
-		print ("waiting for "+t); 
+		deliberationTimer = new Timer ( baseDeliberationTime -t);
+		print ("waiting for "+t);
 		currentState = LogicState.combat_deliberation;
 	}
 
 	void chooseForCombat(){
+		UnityEngine.Debug.LogWarning ("FIX ME");
+		return;
 		//TODO: get available troopsn
 		List<Troopers> availableTrps = null; //?????
-		UnityEngine.Debug.LogWarning ("FIX ME");
 
 		if (availableTrps.Count == 0)
 			throw new System.Exception ("NO TROOPS AVAILABLE IN "+currentPlanet);

@@ -14,12 +14,10 @@ public class GameHandler : MonoBehaviour
 	};
 
 	public GamePhase phase;
-	private DiscoveryHistory discHistory;
 	private Planet planetSelectd;
 	public AnimHandler anim;
 	public PlanetIntelligence pI;
 	public PlayerShip pShip;
-	private int initialDiscoveryLvl = 1;
 
 	#if UNITY_EDITOR
 	public Transform debug_planet;
@@ -105,11 +103,12 @@ public class GameHandler : MonoBehaviour
 		if (!pShip.hasResources (BaseVals.ResProbes, probeQ))
 			throw new System.Exception ("Attempting to use more probes than actually available");
 
-		if (planetSelectd.getExplotationState() >= ExplotationState.researched) {
-				print ("Probing level: "+(int)planetSelectd.getExplotationState());
-			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "Probing ineffective.");
+		if (planetSelectd.getExplotationState() > ExplotationState.researched) {
+			print ("Probing level: "+(int)planetSelectd.getExplotationState());
+			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No more information available from probes.");
 			return;
 		}
+		
 		pShip.modifyResource(BaseVals.ResProbes, -probeQ);
 		planetSelectd.probe (probeQ);
 		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
@@ -170,7 +169,8 @@ public class GameHandler : MonoBehaviour
 	{
 		int len = troopNames.Length;
 		Troopers[] troopArray = new Troopers[len];
-		for (int i = 0; i < troopNames.Length; i++) {
+		for (int i = 0; i < troopNames.Length; i++)
+		{
 			print ("A adding " + troopNames [i]);
 			troopArray [i] = sp.getTroops (troopNames [i]);
 		}
@@ -182,6 +182,8 @@ public class GameHandler : MonoBehaviour
 	{
 		ResourceBase r = (ResourceBase) oRes;
 		print("adding "+r);
+		//TODO: Queue the popups or show a list of all resoources gained...
+		EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "Obtained "+r);
 		pShip.addResource(r);
 		EvHandler.ExecuteEv(UIEvent.UPDATE_INV);
 	}

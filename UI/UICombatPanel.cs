@@ -15,12 +15,7 @@ public class UICombatPanel : MonoBehaviour {
 	void Awake () {
 		anim = GetComponent<Animation> ();
 		if (!plyCombatPanel) plyCombatPanel = GetComponentInChildren <PlayerCombatPanel> ();
-		plyCombatPanel.onAdd += updatePlayerSide;
-		plyCombatPanel.onRemove += updatePlayerSide;
-
 		if (!pltCombatPanel) pltCombatPanel = GetComponentInChildren <PlanetCombatPanel> ();
-		pltCombatPanel.onAdd += updatePlanetSide;
-		pltCombatPanel.onRemove += updatePlanetSide;
 
 		EvHandler.RegisterEv (UIEvent.SHOW_COMBAT_PANEL, showCombatPanel);
 		//EvHandler.RegisterEv (UIEvent.HIDE_COMBAT_PANEL, hideCombatPanel);
@@ -57,32 +52,27 @@ public class UICombatPanel : MonoBehaviour {
 		EvHandler.ExecuteEv (GameEvent.EXPLORE_PHASE);
 	}
 
-	void updatePlayerSide(UICounterBase bCounter) {
-		
-		//plyCombatStrength.text = iCounter.counterQuantity.ToString ();
-		plyCombatStrength.text = plyCombatPanel.troopStr.ToString ();
+	void updatePlayerSide() {
 	}
 
-
-	void updatePlanetSide(UICounterBase bCounter) {
-		pltCombatStrength.text = pltCombatPanel.troopStr.ToString ();
+	void updatePlanetSide() {
 	}
 
-	void combatCalc(){
+	void combatCalc() {
 		string[] plyTrpNames = plyCombatPanel.getTroopsNames();
-		if (plyTrpNames.Length == 0) 
+		if (plyTrpNames.Length == 0)
 			return;
-		
+
 		string[] pltTrpNames = pltCombatPanel.getTroopsNames ();
 		if (pltTrpNames.Length == 0)
 			EvHandler.ExecuteEv (GameEvent.AWON);
-		
+
 		object[] objArray = new object[]{plyTrpNames, pltTrpNames};
 		EvHandler.ExecuteEv (GameEvent.RESOLVE_CBT_PHASE, objArray); //Relay info on troops names
 	}
 
 	void updatePanel(object objParams){
-		
+
 		Species atking = (Species) ((object[])objParams) [0];
 
 		if (atking) {

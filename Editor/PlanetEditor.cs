@@ -33,6 +33,9 @@ public class PlanetEditor : Editor
 	{
 		base.OnInspectorGUI ();
 		ResourceSerialize();
+		if ( GUILayout.Button("init civilization")) {
+			((Planet)target).initCiv();
+		}
 
 	}
 
@@ -55,7 +58,6 @@ public class PlanetEditor : Editor
 
 	void ResourceSerialize()
 	{
-
 		if (GUILayout.Button ("Resource Inventory")) { rfold [0] = !rfold [0]; }
 
 		if ( rfold[0] && resourcesInv != null){

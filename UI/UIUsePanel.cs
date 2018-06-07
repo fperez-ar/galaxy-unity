@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class UIUsePanel<T> : MonoBehaviour, IToggleable 
+public abstract class UIUsePanel<T> : MonoBehaviour, IToggleable
 {
     //components
     public Animation anim;
     public InputField inputField;
+    public Slider inputSlider;
 	public Text consumeIntervalText;
     //internal
 	protected int index = 0;
@@ -20,11 +21,12 @@ public abstract class UIUsePanel<T> : MonoBehaviour, IToggleable
 		set { mShown = value; }
 	}
 
-    protected virtual void Awake () 
+    protected virtual void Awake ()
 	{
 		if (anim == null) anim = GetComponent <Animation> ();
 		consumeIntervalText.text = "x" + consumeInterval [index];
-		inputField.onValueChanged.AddListener (delegate{validateInput();});
+        if ( inputField ) inputField.onValueChanged.AddListener (delegate{validateInput();});
+        if ( inputSlider ) inputSlider.onValueChanged.AddListener(delegate{validateSlider();});
 	}
 
     public virtual void toggle ()
@@ -60,7 +62,7 @@ public abstract class UIUsePanel<T> : MonoBehaviour, IToggleable
 	{
 		inputField.text = "1";
 	}
-    
+
     protected virtual void OnBeforeShow ()
 	{
 		if (BeforeShow != null) {
@@ -71,4 +73,6 @@ public abstract class UIUsePanel<T> : MonoBehaviour, IToggleable
     public virtual void Use(){}
 
     protected virtual void validateInput(){}
+    protected virtual void validateSlider(){}
+
 }

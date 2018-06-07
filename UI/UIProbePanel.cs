@@ -11,6 +11,8 @@ public class UIProbePanel : UIUsePanel<ResourceBase>, IToggleable {
 	{
 		base.Awake();
 		EvHandler.RegisterEv (UIEvent.SHOW_PROBE_PANEL, setResource);
+		inputSlider.wholeNumbers = true;
+		inputSlider.minValue = 1;
 	}
 
 	public void add()
@@ -31,6 +33,7 @@ public class UIProbePanel : UIUsePanel<ResourceBase>, IToggleable {
 	{
 		ResourceBase r = (ResourceBase)oResource;
 		uiUseElement.set (r);
+		inputSlider.maxValue = uiUseElement.getRefObj.quantity;
 		show ();
 	}
 
@@ -47,6 +50,11 @@ public class UIProbePanel : UIUsePanel<ResourceBase>, IToggleable {
 		int max = uiUseElement.getRefObj.quantity ;
 		int a = Mathf.Clamp (q, 0, max);
 		inputField.text = a.ToString ();
+	}
+
+	protected override void validateSlider()
+	{
+		inputField.text = inputSlider.value.ToString();
 	}
 
 }
