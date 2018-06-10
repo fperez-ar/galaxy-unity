@@ -16,7 +16,6 @@ public static class GameMode
 	{
 		last = current;
 		current = state;
-
 		UnityEngine.Debug.LogWarning ("GAME MODE SET TO: " + state);
 		switch (state) {
 		//when interacting with ui, disable exploration controls

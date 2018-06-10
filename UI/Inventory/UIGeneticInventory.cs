@@ -5,15 +5,16 @@ using UnityEngine;
 
 public class UIGeneticInventory : UIInventory<GeneticTrait>
 {
-	
+
 	public override void Awake ()
 	{
 		base.Awake ();
-		uiElementPrefab = (UIGeneticElement)Resources.Load<UIGeneticElement> ("ui/GeneticUIElement");
 		clear ();
+		uiElementPrefab = (UIGeneticElement)Resources.Load<UIGeneticElement> ("ui/GeneticUIElement");
+		objUiMap = new Dictionary<GeneticTrait, UIListElement<GeneticTrait>> (list.Count);
 		EvHandler.RegisterEv (UIEvent.UPDATE_INV, update);
-		EvHandler.RegisterEv (GameEvent.ADD_GENE_MAT, TurnOff);
-		EvHandler.RegisterEv (GameEvent.RM_GENE_MAT, TurnOn);
+		EvHandler.RegisterEv (GameEvent.ADD_GENE_MAT, removeFromInventory);
+		EvHandler.RegisterEv (GameEvent.RM_GENE_MAT, returnToInventory);
 	}
 
 	public override void toggle ()
@@ -26,13 +27,13 @@ public class UIGeneticInventory : UIInventory<GeneticTrait>
 		setRange (pShip.getAllGenes ());
 	}
 
-	void TurnOff (object oGene)
+	void removeFromInventory (object oGene)
 	{
 		GeneticTrait g = (GeneticTrait)oGene;
 		objUiMap [g].gameObject.SetActive (false);
 	}
 
-	void TurnOn (object oCounter)
+	void returnToInventory (object oCounter)
 	{
 		GeneticTrait g = (GeneticTrait)oCounter;
 		objUiMap [g].gameObject.SetActive (true);

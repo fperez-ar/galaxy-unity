@@ -8,7 +8,7 @@ using UnityEngine;
 public static class SaveManager {
 
 	public static char sep = Path.DirectorySeparatorChar;
-	public static string baseDir = 
+	public static string baseDir =
 		Application.dataPath + sep + "Resources" + sep + "ply" + sep;
 
 	public static void Load(PlayerShip pShip) {
@@ -33,6 +33,8 @@ public static class SaveManager {
 		if (Directory.Exists (genesDir)) {
 			pShip.addGenes (LoadGenes (genesDir));
 		}
+		
+		EvHandler.ExecuteEv(UIEvent.UPDATE_INV);
 	}
 
 	public static void Save(PlayerShip pShip) {
@@ -107,8 +109,8 @@ public static class SaveManager {
 		string jsonGene = JsonUtility.ToJson (g);
 		File.WriteAllText (filepath, jsonGene);
 	}
-		
-	public static GeneticTrait[] LoadGenes(string path) {		
+
+	public static GeneticTrait[] LoadGenes(string path) {
 		string[] geneFiles = Directory.GetFiles(path, Filenames.resSearchPattrn);
 		GeneticTrait[] genes = new GeneticTrait[geneFiles.Length];
 		for (int i = 0; i < geneFiles.Length; i++) {
@@ -145,7 +147,7 @@ public static class SaveManager {
 	#endregion
 
 	private static void CreateDir(string path ) {
-		if (Directory.Exists (path)) { 
+		if (Directory.Exists (path)) {
 			Directory.Delete (path, true);
 		}
 		Directory.CreateDirectory (path);

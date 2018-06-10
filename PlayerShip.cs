@@ -10,15 +10,9 @@ public class PlayerShip : MonoBehaviour {
 	private int resourcePoints = -1;
 	public ResourceInventory resources = new ResourceInventory();
 
-	void Awake() {
-		EvHandler.RegisterEv (GameEvent.RM_CBT_FF, removeTrooper, false);
-	}
-
-
 	public int getResourcePoints() {
 		return resourcePoints / BaseVals.maxResource;
 	}
-
 
 	public Troopers getTroop(string troopsName) {
 		return dominantSpecies.getTroops (troopsName);
@@ -28,16 +22,18 @@ public class PlayerShip : MonoBehaviour {
 		return dominantSpecies.man.getArray ();
 	}
 
+	public void addTrooper(Troopers t) {
+		dominantSpecies.man.add (t);
+	}
+
 	public void addTroopers(Troopers[] ts) {
 		dominantSpecies.man.addRange (ts);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
 	public void removeTrooper(object refTrooper) {
 		Troopers t = (Troopers)refTrooper;
 		dominantSpecies.population += t.manpower;
 		dominantSpecies.man.remove(t.name);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
 	public GeneticTrait[] getAllGenes() {
@@ -46,12 +42,8 @@ public class PlayerShip : MonoBehaviour {
 
 	public void addGenes(GeneticTrait[] gs){
 		dominantSpecies.gen.addRange (gs);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
-	public ResourceBase[] getAllResources() {
-		return resources.getArray ();
-	}
 
 	public ResourceBase getResource(string resourceName) {
 		return resources.get (resourceName);
@@ -59,21 +51,17 @@ public class PlayerShip : MonoBehaviour {
 
 	public void addResource(ResourceBase r ) {
 		resources.add (r);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 	public void addResources(ResourceBase[] rs ) {
 		resources.addRange (rs);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
 	public void removeResource(string resourceName) {
 		resources.remove (resourceName);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
 	public void removeResource(ResourceBase rs ) {
 		resources.remove (rs.name);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
 	public bool hasResources(ResourceBase res) {
@@ -90,7 +78,10 @@ public class PlayerShip : MonoBehaviour {
 
 	public void modifyResource(string resourceName, int byQuantity) {
 		resources.modify(resourceName, byQuantity);
-		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
+	}
+
+	public ResourceBase[] getAllResources() {
+		return resources.getArray ();
 	}
 
 	public int getPopulation() {

@@ -11,7 +11,7 @@ public class UINavigationHistory : UIInventory<CelestialBody>
 		base.Awake ();
 		uiElementPrefab = (UICelestialBodyElement)Resources.Load<UICelestialBodyElement> ("ui/UICelestialBodyElement");
 		navigationHistory = new HistoryQueueBase<CelestialBody> ();
-
+		clear();
 		EvHandler.RegisterEv (GameEvent.ORBIT_PLT, addPlanet);
 		EvHandler.RegisterEv (UIEvent.UPDATE_INV, update);
 	}
@@ -37,13 +37,9 @@ public class UINavigationHistory : UIInventory<CelestialBody>
 		if (elems.Length > list.Count) {
 			increase (elems.Length - list.Count);
 		}
-		//objUiMap.Clear ();
 		for (int i = 0; i < list.Count; i++) {
 			if (i < elems.Length) {
 				list [i].set (elems [i]);
-				/*if (objUiMap.ContainsKey (elems [i])){
-					objUiMap.Add (elems [i], list [i]);
-				}*/
 			} else {
 				list [i].unset ();
 			}

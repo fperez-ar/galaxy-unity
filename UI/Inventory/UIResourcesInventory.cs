@@ -7,7 +7,9 @@ public class UIResourcesInventory : UIInventory<ResourceBase>, IToggleable {
 
 	public override void Awake () {
 		base.Awake ();
+		clear();
 		uiElementPrefab = (UIResourceElement)  Resources.Load<UIResourceElement> ("ui/GeneticUIElement");
+		objUiMap = new Dictionary<ResourceBase, UIListElement<ResourceBase>> (list.Count);
 		EvHandler.RegisterEv (UIEvent.UPDATE_INV, update);
 	}
 

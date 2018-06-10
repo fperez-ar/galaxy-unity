@@ -16,6 +16,13 @@ public class Planet : CelestialBody
 	private Transform sun;
 	private int resourcePoints = -1;
 
+	#if UNITY_EDITOR
+	void Awake()
+	{
+		initCiv();
+	}
+	#endif
+
 	public void initCiv ()
 	{
 		hasCivilization = true;

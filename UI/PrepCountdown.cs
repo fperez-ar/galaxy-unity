@@ -22,7 +22,8 @@ public class PrepCountdown : MonoBehaviour {
 		gameObject.SetActive (false);
 	}
 
-	void BeginCountdown(object countdown){
+	void BeginCountdown(object countdown)
+	{
 		gameObject.SetActive (true);
 
 		int finalCount = countdownOffset + (int)countdown;
@@ -40,13 +41,13 @@ public class PrepCountdown : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+
 		UpdateTimeSign ();
 
 		if (time.check ()) {
 			EndCountdown ();
 		}
-		
+
 	}
 
 	void UpdateTimeSign(){

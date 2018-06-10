@@ -34,6 +34,7 @@ public class PlanetIntelligence : MonoBehaviour {
 	}
 
 	void chooseForCombat(){
+
 		UnityEngine.Debug.LogWarning ("FIX ME");
 		return;
 		//TODO: get available troopsn

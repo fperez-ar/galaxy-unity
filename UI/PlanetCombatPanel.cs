@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlanetCombatPanel : MonoBehaviour {
-	
+
 	public onCounterInteraction onAdd;
 	public onCounterInteraction onRemove;
 	public int troopStr = 0;
 	private List<UICounterBase> elemsLi = new List<UICounterBase>();
 
-	void Awake(){
-		
+	public void awake(){
+		clear();
 	}
 
 	public void addCounter(UICounterBase counterBase){
@@ -37,9 +37,16 @@ public class PlanetCombatPanel : MonoBehaviour {
 		int len = elemsLi.Count;
 		string[] trps = new string[len];
 		for (int i = 0; i < len; i++) {
-			
+
 		}
 
 		return trps;
+	}
+
+	public void clear ()
+	{
+		for (int i = 0; i < elemsLi.Count; i++) {
+			elemsLi [i].gameObject.SetActive (false);
+		}
 	}
 }

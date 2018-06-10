@@ -13,9 +13,11 @@ public class UICombatPanel : MonoBehaviour {
 	public PlanetCombatPanel pltCombatPanel;
 
 	void Awake () {
-		anim = GetComponent<Animation> ();
+		if (!anim) anim = GetComponent<Animation> ();
 		if (!plyCombatPanel) plyCombatPanel = GetComponentInChildren <PlayerCombatPanel> ();
 		if (!pltCombatPanel) pltCombatPanel = GetComponentInChildren <PlanetCombatPanel> ();
+		plyCombatPanel.awake();
+		pltCombatPanel.awake();
 
 		EvHandler.RegisterEv (UIEvent.SHOW_COMBAT_PANEL, showCombatPanel);
 		//EvHandler.RegisterEv (UIEvent.HIDE_COMBAT_PANEL, hideCombatPanel);
@@ -27,6 +29,8 @@ public class UICombatPanel : MonoBehaviour {
 	}
 
 	void showCombatPanel(){
+		//plyCombatPanel.clear();
+		pltCombatPanel.clear();
 		anim.CrossFade("combat_panel_in", 0.2f);
 	}
 
@@ -49,16 +53,20 @@ public class UICombatPanel : MonoBehaviour {
 	public void HideViaButton(){
 		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 		hideCombatPanel ();
-		EvHandler.ExecuteEv (GameEvent.EXPLORE_PHASE);
+		GameMode.setMode(GameState.NAVEGATION);
 	}
 
-	void updatePlayerSide() {
+	void updatePlayerSide()
+	{
 	}
 
-	void updatePlanetSide() {
+
+	void updatePlanetSide()
+	{
 	}
 
-	void combatCalc() {
+	void combatCalc()
+	{
 		string[] plyTrpNames = plyCombatPanel.getTroopsNames();
 		if (plyTrpNames.Length == 0)
 			return;
@@ -71,8 +79,8 @@ public class UICombatPanel : MonoBehaviour {
 		EvHandler.ExecuteEv (GameEvent.RESOLVE_CBT_PHASE, objArray); //Relay info on troops names
 	}
 
-	void updatePanel(object objParams){
-
+	void updatePanel(object objParams)
+	{
 		Species atking = (Species) ((object[])objParams) [0];
 
 		if (atking) {

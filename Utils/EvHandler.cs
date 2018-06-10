@@ -157,6 +157,7 @@ public enum GameEvent
 	//troop creation
 	ADD_GENE_MAT, RM_GENE_MAT,
 	ADD_CBT_FF,	RM_CBT_FF,
+	DISBAND_CBT_FF,
 	MOD_RES,
 	//combat resolution
 	AWON, ALOST,

@@ -108,22 +108,24 @@ public class GameHandler : MonoBehaviour
 			EvHandler.ExecuteEv (UIEvent.SHOW_AUTOFADE_TOOLTIP, "No more information available from probes.");
 			return;
 		}
-		
+
 		pShip.modifyResource(BaseVals.ResProbes, -probeQ);
 		planetSelectd.probe (probeQ);
 		EvHandler.ExecuteEv (UIEvent.SHOW_PLANET_INFO, planetSelectd);
+		EvHandler.ExecuteEv (UIEvent.UPDATE_INV);
 	}
 
 	void invadePlanet ()
 	{
+		if ( GameMode.isMode(GameState.COMBAT) ) return;
 		phase = GamePhase.preparation;
 		int atkT = pShip.dominantSpecies.culture.technology;
 		int defT = planetSelectd.dominantSpecies.culture.technology;
 
+		GameMode.setMode(GameState.COMBAT);
 		EvHandler.ExecuteEv (UIEvent.SHOW_COMBAT_PANEL);
 		EvHandler.ExecuteEv (GameEvent.PREPARATION_PHASE);
 		EvHandler.ExecuteEv (GameEvent.PREPARATION_PHASE, Mathf.Abs (atkT - defT));
-
 		UpdateCombatPanel ();
 	}
 	#endregion
@@ -206,6 +208,7 @@ public class GameHandler : MonoBehaviour
 
 	public void OnApplicationQuit ()
 	{
+		print("Saving...");
 		SaveManager.Save (pShip, quit);
 	}
 

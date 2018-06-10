@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UITrooperElement : UIListElement<Troopers>, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+public class UITrooperCbtElement : UIListElement<Troopers>, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
 
 	public Image img;
 	public Text quantity;
@@ -31,26 +31,23 @@ public class UITrooperElement : UIListElement<Troopers>, IPointerClickHandler, I
 		base.unset ();
 	}
 
-	public void disband(){
-		//if you disband while in combat, you force an inventory update which shows the elements in combat that are technically not pruned from the inventory list
-		EvHandler.ExecuteEv (GameEvent.DISBAND_CBT_FF, refObj);
-	}
-
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		//Debug.Log ("Clicked trooper element "+refObj);
 		if (this.isActiveAndEnabled && GameMode.isMode(GameState.COMBAT))
 		{
-			EvHandler.ExecuteEv (GameEvent.ADD_CBT_FF, refObj);
+			EvHandler.ExecuteEv (GameEvent.RM_CBT_FF, refObj);
 		}
 	}
 
-	public virtual void OnPointerEnter(PointerEventData eventData) {
+	public virtual void OnPointerEnter(PointerEventData eventData)
+	{
 		//Debug.Log ( "OnPointerEnter" );
 		//EvHandler.ExecuteEv (UIEvent.SHOW_TOOLTIP, refObj.ToString ());
 	}
 
-	public void OnPointerExit(PointerEventData eventData) {
+	public void OnPointerExit(PointerEventData eventData)
+	{
 		//Debug.Log ( "OnPointerExit" );
 		//EvHandler.ExecuteEv (UIEvent.HIDE_TOOLTIP);
 	}

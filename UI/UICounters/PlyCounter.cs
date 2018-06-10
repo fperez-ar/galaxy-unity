@@ -14,7 +14,7 @@ public class PlyCounter : UICounterBase, IBeginDragHandler, IDragHandler, IEndDr
 	public override void Awake ()
 	{
 		base.Awake ();
-
+		
 		if (draggable){
 			EvHandler.RegisterEv (GameEvent.PREPARATION_PHASE, combatPhaseIn);
 			EvHandler.RegisterEv (GameEvent.EXPLORE_PHASE, combatPhaseOut);
@@ -62,7 +62,7 @@ public class PlyCounter : UICounterBase, IBeginDragHandler, IDragHandler, IEndDr
 	}
 	*/
 
-	void combatPhaseIn()  { 
+	void combatPhaseIn()  {
 		dragEnabled = true;
 	}
 
