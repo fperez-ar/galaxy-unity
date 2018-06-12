@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UITroopersInventory : UIInventory<Troopers> {
+public class UITroopersInventory : UIInventory<Troopers>, IToggleable {
 
-	override public void Awake() {
+	public PlayerShip pShip;
+	override public void Awake()
+	{
 		base.Awake ();
 		uiElementPrefab = (UITrooperElement)  Resources.Load<UITrooperElement> ("ui/TrooperUIElement");
 		objUiMap = new Dictionary<Troopers, UIListElement<Troopers>> (list.Count);
@@ -19,7 +21,8 @@ public class UITroopersInventory : UIInventory<Troopers> {
 		update ();
 	}
 
-	protected override void update () {
+	protected override void update ()
+	{
 		setRange(pShip.getAllTroopers ());
 	}
 
@@ -34,7 +37,8 @@ public class UITroopersInventory : UIInventory<Troopers> {
 	}
 	#endif
 
-	protected override void OnBeforeShow () {
+	protected override void OnBeforeShow ()
+	{
 		base.OnBeforeShow ();
 	}
 

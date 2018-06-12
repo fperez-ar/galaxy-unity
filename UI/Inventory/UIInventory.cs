@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class UIInventory<T> : MonoBehaviour, IToggleable where T : class
 {
 	//TODO: Add states animating, ready to avoid activating buttons when animating
-	public PlayerShip pShip;
+
 	public Transform contentParent;
 	public event SimpleDelegate BeforeShow;
 	public bool shown {
@@ -68,7 +68,7 @@ public abstract class UIInventory<T> : MonoBehaviour, IToggleable where T : clas
 		objUiMap.Clear ();
 		for (int i = 0; i < list.Count; i++) {
 			if (i < elems.Length) {
-				print("Setting #["+i+"]:"+elems [i]);
+				//print("Setting #["+i+"]:"+elems [i]);
 				list [i].set (elems [i]);
 				objUiMap.Add (elems [i], list [i]);
 			} else {

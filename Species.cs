@@ -17,6 +17,12 @@ public class Species {
 	public GeneticInventory gen  = new GeneticInventory ();
 	public ManpowerInventory man = new ManpowerInventory ();
 
+	public Species (Culture c, GeneticInventory ginv, ManpowerInventory minv)
+	{
+		culture = c;
+		gen = ginv;
+		man = minv;
+	}
 	public Species ()
 	{
 		culture = new Culture();

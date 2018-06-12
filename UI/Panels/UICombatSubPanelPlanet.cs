@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PlayerCombatPanel : UIInventory<Troopers> {
+public class UICombatSubPanelPlanet : UIInventory<Troopers> {
 
 	public int troopStr = 0;
 
@@ -10,22 +10,22 @@ public class PlayerCombatPanel : UIInventory<Troopers> {
 		base.Awake ();
 		uiElementPrefab = (UITrooperCbtElement)  Resources.Load<UITrooperCbtElement> ("ui/UITrooperCbtElement");
 		objUiMap = new Dictionary<Troopers, UIListElement<Troopers>> (list.Count);
-		EvHandler.RegisterEv(GameEvent.ADD_CBT_FF, add);
-		EvHandler.RegisterEv(GameEvent.RM_CBT_FF, remove);
+		//EvHandler.RegisterEv(GameEvent.ADD_CBT_FF, add);
+		//EvHandler.RegisterEv(GameEvent.RM_CBT_FF, remove);
 		clear();
 	}
 
-	void add(object o)
+	public void add(Troopers t)//(object o)
 	{
 		if ( GameMode.isMode(GameState.COMBAT)) {
-			set((Troopers) o);
+			set(t);
 		}
 	}
 
-	void remove(object o)
+	public void remove(Troopers t)//(object o)
 	{
 		if ( GameMode.isMode(GameState.COMBAT)) {
-			unset((Troopers) o);
+			unset(t);
 		}
 	}
 
@@ -92,58 +92,10 @@ public class PlayerCombatPanel : UIInventory<Troopers> {
 			list [i].gameObject.SetActive (false);
 		}
 		objUiMap.Clear();
-
 	}
 
 	protected override void OnBeforeShow () {
 		base.OnBeforeShow ();
 	}
-}
-
-
-/*
-private BoxCollider2D container;
-private List<PlyCounter> elemsLi = new List<PlyCounter>();
-void add(object oCounter){
-	PlyCounter bCounter = (PlyCounter)oCounter;
-
-	if (container.bounds.Contains (bCounter.transform.position)) {
-		if (!elemsLi.Contains (bCounter)) {
-			addCounter (bCounter);
-		}
-	} else {
-		if (elemsLi.Contains (bCounter)) {
-			removeCounter (bCounter);
-		}
-	}
 
 }
-
-public void addCounter(UICounterBase counterBase){
-
-	PlyCounter bCounter = (PlyCounter) counterBase;
-	bCounter.draggable = false;
-	UIHandlerHelper.Reparent (bCounter.transform, this.transform);
-	elemsLi.Add (bCounter);
-
-	if (onAdd != null){
-		onAdd (bCounter);
-	}
-}
-
-public void removeCounter(UICounterBase counterBase){
-	PlyCounter bCounter = (PlyCounter) counterBase;
-	bCounter.draggable = true;
-	elemsLi.Remove(bCounter);
-	UIHandlerHelper.ParentRestore (bCounter.transform);
-
-	if (onRemove != null){
-		onRemove(bCounter);
-	}
-}
-
-void Round( Vector3 v, float roundFactor = 10) {
-	v.x = v.x % roundFactor;
-	v.y = v.y % roundFactor;
-}
-*/

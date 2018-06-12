@@ -9,13 +9,13 @@ public class UICombatPanel : MonoBehaviour {
 	public Text pltRace;
 	public Text pltCombatStrength;
 	private Animation anim;
-	public PlayerCombatPanel plyCombatPanel;
-	public PlanetCombatPanel pltCombatPanel;
+	public UICombatSubPanelPlayer plyCombatPanel;
+	public UICombatSubPanelPlanet pltCombatPanel;
 
 	void Awake () {
 		if (!anim) anim = GetComponent<Animation> ();
-		if (!plyCombatPanel) plyCombatPanel = GetComponentInChildren <PlayerCombatPanel> ();
-		if (!pltCombatPanel) pltCombatPanel = GetComponentInChildren <PlanetCombatPanel> ();
+		if (!plyCombatPanel) plyCombatPanel = GetComponentInChildren <UICombatSubPanelPlayer> ();
+		if (!pltCombatPanel) pltCombatPanel = GetComponentInChildren <UICombatSubPanelPlanet> ();
 		plyCombatPanel.awake();
 		pltCombatPanel.awake();
 

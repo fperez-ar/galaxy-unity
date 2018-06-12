@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class UIGeneticInventory : UIInventory<GeneticTrait>, IToggleable {
 
-public class UIGeneticInventory : UIInventory<GeneticTrait>
-{
-
+	public PlayerShip pShip;
 	public override void Awake ()
 	{
 		base.Awake ();

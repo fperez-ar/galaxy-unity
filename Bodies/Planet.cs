@@ -7,7 +7,7 @@ public class Planet : CelestialBody
 
 	[HideInInspector]
 	public bool hasCivilization = false;
-	public Species dominantSpecies = null;
+	public Species dominantSpecies ;
 	public ResourceInventory resources = new ResourceInventory ();
 	public float xAmplitude = 100, yAmplitude = 100;
 	public float orbitSpeed;
@@ -19,7 +19,8 @@ public class Planet : CelestialBody
 	#if UNITY_EDITOR
 	void Awake()
 	{
-		initCiv();
+		//initCiv();
+		hasCivilization = true;
 	}
 	#endif
 

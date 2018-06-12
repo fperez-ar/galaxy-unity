@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIResourcesInventory : UIInventory<ResourceBase>, IToggleable {
 
-
+	public PlayerShip pShip;
 	public override void Awake () {
 		base.Awake ();
 		clear();
@@ -13,16 +13,19 @@ public class UIResourcesInventory : UIInventory<ResourceBase>, IToggleable {
 		EvHandler.RegisterEv (UIEvent.UPDATE_INV, update);
 	}
 
-	override protected void update () {
+	override protected void update ()
+	{
 		setRange( pShip.getAllResources () );
 	}
 
-	protected override void setRange (ResourceBase[] rs) {
+	protected override void setRange (ResourceBase[] rs)
+	{
 		base.setRange (rs);
 	}
 
 
-	protected override void OnBeforeShow () {
+	protected override void OnBeforeShow ()
+	{
 		base.OnBeforeShow ();
 	}
 }

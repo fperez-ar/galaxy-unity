@@ -228,7 +228,6 @@ public class SerializePlayerShip : Editor {
 		}
 	}
 
-
 	void SerializeGeneticTrait(GeneticTrait g){
 		EditorGUILayout.LabelField("Aggresiveness", g.aggresivenessModificator.ToString ());
 		EditorGUILayout.LabelField("Technology", g.technologyModificator.ToString ());
@@ -258,7 +257,7 @@ public class SerializePlayerShip : Editor {
 
 }
 
-[CustomPropertyDrawer(typeof(Troopers))]
+/*[CustomPropertyDrawer(typeof(Troopers))]
 public class TrooperDrawer : PropertyDrawer {
 
 
@@ -280,28 +279,4 @@ public class TrooperDrawer : PropertyDrawer {
 		EditorGUI.EndProperty();
 	}
 }
-
-
-public struct ResourceHelper{
-	public string name;
-	public int quantity;
-
-	public ResourceBase getResource(){
-		return new ResourceBase (this.name, this.quantity);
-	}
-}
-
-public struct TrooperHelper{
-	public string name;
-	public int quantity, offense, defense, morale;
-	public float adaptability;
-
-	public Troopers getTrooper(){
-		return new Troopers (name, quantity) {
-			offensiveCap = offense,
-			defensiveCap = defense,
-			morale = morale,
-			adaptability = adaptability
-		};
-	}
-}
+*/

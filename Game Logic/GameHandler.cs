@@ -44,14 +44,17 @@ public class GameHandler : MonoBehaviour
 		//EvHandler.RegisterEv (UIEvent.SHOW_PLANET_INFO, setCurrentPlanet);
 		GameMode.setMode (GameState.NAVEGATION);
 		#if UNITY_EDITOR
-		Invoke ("debug", 0.5f);
+			debug();
 		#endif
 	}
 	#if UNITY_EDITOR
-	void debug ()
+	void debug()
 	{
-		anim.MoveTo (debug_planet);
+		Invoke ("debugMoveTo", 0.5f);
+		Invoke ("debugInvade", 1f);
 	}
+	void debugMoveTo () { anim.MoveTo (debug_planet); }
+	void debugInvade () { EvHandler.ExecuteEv(GameEvent.INVADE_PLT); }
 	#endif
 	void Update ()
 	{
