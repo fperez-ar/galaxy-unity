@@ -30,7 +30,7 @@ public class UICombatPanel : MonoBehaviour {
 
 	void showCombatPanel(){
 		//plyCombatPanel.clear();
-		pltCombatPanel.clear();
+		//pltCombatPanel.clear();
 		anim.CrossFade("combat_panel_in", 0.2f);
 	}
 

@@ -2,11 +2,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public delegate void onCounterInteraction (UICounterBase c);
 public class PlayerCombatPanel : UIInventory<Troopers> {
 
 	public int troopStr = 0;
-	private int index = 0;
 
 	public void awake(){
 		base.Awake ();
@@ -94,7 +92,7 @@ public class PlayerCombatPanel : UIInventory<Troopers> {
 			list [i].gameObject.SetActive (false);
 		}
 		objUiMap.Clear();
-		index = 0;
+
 	}
 
 	protected override void OnBeforeShow () {
